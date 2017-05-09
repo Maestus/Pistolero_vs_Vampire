@@ -1,3 +1,5 @@
+
+
 import java.util.BitSet;
 
 import javafx.event.EventHandler;
@@ -8,10 +10,11 @@ import javafx.scene.input.KeyEvent;
 public class KeyController {
 	private BitSet keyboardBitSet = new BitSet();
 	private Scene scene;
-
+	private Setting config;
 	
-	public KeyController(Scene s){
+	public KeyController(Scene s, Setting config){
 		this.scene = s;
+		this.config = config;
 	}
 	public void addListeners() {
 		scene.addEventFilter(KeyEvent.KEY_PRESSED, keyPressedEventHandler);
@@ -40,22 +43,26 @@ public class KeyController {
 	};
 
 	public boolean moveUp() {
-		return !keyboardBitSet.get((KeyCode.DOWN).ordinal()) && keyboardBitSet.get((KeyCode.UP).ordinal())  && !keyboardBitSet.get((KeyCode.LEFT).ordinal()) && !keyboardBitSet.get((KeyCode.RIGHT).ordinal()) ;
+		return !keyboardBitSet.get((Setting.type(config.bas.getAttribute("key"))).ordinal()) && keyboardBitSet.get((Setting.type(config.haut.getAttribute("key"))).ordinal())  && !keyboardBitSet.get((Setting.type(config.droite.getAttribute("key"))).ordinal())  && !keyboardBitSet.get((Setting.type(config.gauche.getAttribute("key"))).ordinal())  ;
 	}
 
 	public boolean moveDown() {
-		return keyboardBitSet.get((KeyCode.DOWN).ordinal()) && !keyboardBitSet.get((KeyCode.UP).ordinal())  && !keyboardBitSet.get((KeyCode.LEFT).ordinal()) && !keyboardBitSet.get((KeyCode.RIGHT).ordinal()) ;
+		return keyboardBitSet.get((Setting.type(config.bas.getAttribute("key"))).ordinal()) && !keyboardBitSet.get((Setting.type(config.haut.getAttribute("key"))).ordinal())  && !keyboardBitSet.get((Setting.type(config.droite.getAttribute("key"))).ordinal())  && !keyboardBitSet.get((Setting.type(config.gauche.getAttribute("key"))).ordinal())  ;
 	}
 
-	public boolean moveLeft() {
-		return !keyboardBitSet.get((KeyCode.DOWN).ordinal()) && !keyboardBitSet.get((KeyCode.UP).ordinal())  && keyboardBitSet.get((KeyCode.LEFT).ordinal()) && !keyboardBitSet.get((KeyCode.RIGHT).ordinal()) ;
+	public boolean moveLeft() {	
+		return !keyboardBitSet.get((Setting.type(config.bas.getAttribute("key"))).ordinal()) && !keyboardBitSet.get((Setting.type(config.haut.getAttribute("key"))).ordinal())  && !keyboardBitSet.get((Setting.type(config.droite.getAttribute("key"))).ordinal())  && keyboardBitSet.get((Setting.type(config.gauche.getAttribute("key"))).ordinal())  ;
 	}
 
 	public boolean moveRight() {
-		return !keyboardBitSet.get((KeyCode.DOWN).ordinal()) && !keyboardBitSet.get((KeyCode.UP).ordinal())  && !keyboardBitSet.get((KeyCode.LEFT).ordinal()) && keyboardBitSet.get((KeyCode.RIGHT).ordinal()) ;
+		return !keyboardBitSet.get((Setting.type(config.bas.getAttribute("key"))).ordinal()) && !keyboardBitSet.get((Setting.type(config.haut.getAttribute("key"))).ordinal())  && keyboardBitSet.get((Setting.type(config.droite.getAttribute("key"))).ordinal())  && !keyboardBitSet.get((Setting.type(config.gauche.getAttribute("key"))).ordinal())  ;	
 	}
 	
 	public boolean moveSpace(){
-		return keyboardBitSet.get((KeyCode.SPACE).ordinal());
+		return keyboardBitSet.get((Setting.type(config.attaque.getAttribute("key"))).ordinal());
+	}
+	
+	public boolean pause(){
+		return keyboardBitSet.get((Setting.type(config.pause.getAttribute("key"))).ordinal());
 	}
 }

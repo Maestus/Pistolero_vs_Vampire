@@ -67,9 +67,9 @@ public class ContainerView {
 
 			if(container.bullets.get(i).explose){
 				if(container.bullets.get(i).moveX>0)
-					animation.add(new AnimationExplosion(container.bullets.get(i).posX-10,container.bullets.get(i).posY, p));
+					animation.add(new AnimationExplosion(container.bullets.get(i).posX,container.bullets.get(i).posY, p));
 				else
-					animation.add(new AnimationExplosion(container.bullets.get(i).posX-10,container.bullets.get(i).posY-10, p));
+					animation.add(new AnimationExplosion(container.bullets.get(i).posX,container.bullets.get(i).posY, p));
 
 				animation.get(animation.size()-1).play();
 				container.bullets.remove(i);
