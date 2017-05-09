@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
-import javafx.geometry.Rectangle2D;
-import javafx.scene.image.ImageView;
+
 import javafx.scene.layout.Pane;
 
 public class ContainerView {
@@ -10,6 +9,8 @@ public class ContainerView {
 	private ArrayList<BulletView> bullets;
 	private ArrayList<VampireView> vamps;
 	private ArrayList<ObstacleView>  obstacles;
+	private ArrayList<AnimationExplosion>  animation;
+
 	Pane p;
 
 	public ContainerView(Container container,Pane p){
@@ -31,7 +32,7 @@ public class ContainerView {
 			obstacles.get(i).add();
 			System.out.println("add");
 		}
-
+		animation = new ArrayList<AnimationExplosion>();
 	}
 
 	public void update(){
@@ -58,15 +59,26 @@ public class ContainerView {
 	}
 	
 	public void removingDeath(){
+		for(int i=0;i<animation.size();i++){
+			if(animation.get(i).isFinished)
+				animation.remove(i);
+		}
 		for(int i=0;i<container.bullets.size();i++){
 
 			if(container.bullets.get(i).explose){
+				if(container.bullets.get(i).moveX>0)
+					animation.add(new AnimationExplosion(container.bullets.get(i).posX-10,container.bullets.get(i).posY, p));
+				else
+					animation.add(new AnimationExplosion(container.bullets.get(i).posX-10,container.bullets.get(i).posY-10, p));
+
+				animation.get(animation.size()-1).play();
 				container.bullets.remove(i);
 				bullets.get(i).remove();
 				bullets.remove(i);
 				break;
 			}
 		}
+		
 		for(int i=0;i<vamps.size();i++){
 			if(!vamps.get(i).charact.isAlive()){
 				vamps.get(i).remove();
@@ -76,6 +88,7 @@ public class ContainerView {
 			
 			
 		}
+		
 		if(!player.getCharact().isAlive())
 			player.remove();
 	}

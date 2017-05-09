@@ -4,7 +4,7 @@ public class Game {
 	ContainerView cont;
 	public final  static double WIDTH =400;
 	public final  static double Height =400;
-
+	
 	public Game(ContainerView c){
 		this.cont = c;
 	}

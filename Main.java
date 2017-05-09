@@ -24,7 +24,7 @@ public class Main extends Application{
 		for(int i=0;i<4;i++)
 		vamp.add(new Vampire(i*32,Game.Height-32,100,Game.WIDTH-32,Game.Height-32,32,32,32*3,36*3,3,50,true));
 		ArrayList<Obstacle> Obstacle = new ArrayList<Obstacle>();
-		Obstacle.add(new Obstacle(40,40,Game.WIDTH,Game.Height,35,35,0,0));
+		Obstacle.add(new Obstacle(150,150,Game.WIDTH,Game.Height,35,35,0,0));
 		System.out.println("Obstacle"+Obstacle.size());
 		Container c = new Container(vamp,pisto,Obstacle);
 		ContainerView cv = new ContainerView(c,p);

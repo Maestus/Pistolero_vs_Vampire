@@ -147,11 +147,11 @@ public class Container {
 			if(pist.collides(obstacles.get(i))|| obstacles.get(i).collides(pist)){
 				System.out.println("collission arbre");
 				if(pist.sens==0)
-					pist.posY+=pist.speed*speed;
+					pist.posY+=(pist.speed*speed);
 				else if(pist.sens==1)
-					pist.posX-=pist.speed*speed;
+					pist.posX-=(pist.speed*speed);
 				else if(pist.sens==2)
-					pist.posY-=pist.speed*speed;
+					pist.posY-=(pist.speed*speed);
 				else
 					pist.posX +=pist.speed*speed;
 					
