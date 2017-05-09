@@ -14,11 +14,13 @@ public class Game {
 			long lastUpdate=0;
 			@Override
 			public void handle(long now) {
+				if(now-lastNanoTime>10000000.0){
 				double elapsedTime = (now - lastNanoTime) / 1000000000.0;
 				lastNanoTime = now;
 					cont.container.update(elapsedTime);
 					cont.update();
 					lastUpdate = now;
+				}
 			}
 		};
 		timer.start();

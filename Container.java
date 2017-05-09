@@ -65,7 +65,7 @@ public class Container {
 				pist.getHurt=false;
 		}
 		for(int i=0;i<vampList.size();i++){
-			if(change== 10)
+			if(change== 30)
 				change =0;
 			if(change==0){
 				choix [i]= (int) (Math.random()*4);
