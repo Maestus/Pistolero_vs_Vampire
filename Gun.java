@@ -1,25 +1,36 @@
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ObservableValue;
 
 public class Gun {
 	int damage;
 	String name;
-	int nbBullet;
+	SimpleIntegerProperty nbBullet;
 	int nbMaxBullet;
+	int reloadTime;
 	public Gun(int damage, String name, int nbMaxBullet) {
 		super();
 		this.damage = damage;
 		this.name = name;
-		this.nbBullet = nbMaxBullet;
+		this.nbBullet = new SimpleIntegerProperty(nbMaxBullet);
 		this.nbMaxBullet = nbMaxBullet;
+		reloadTime=0;
 	}
 	
 	public boolean shoot(){
-		if(nbBullet==0)
+		if(nbBullet.getValue()==0)
 			return false;
 		else
 			return true;
 	}
 	
-	public void reload(){
-		this.nbBullet=nbMaxBullet;
+	public boolean reload(){
+		if(reloadTime==300){
+			this.nbBullet.setValue(nbMaxBullet);
+			reloadTime =0;
+			return true;
+		}
+		else
+			return false;
+			
 	}
 }

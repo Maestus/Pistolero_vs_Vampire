@@ -15,7 +15,7 @@ public class AnimationExplosion extends Animation{
 		explose = new ImageView(new Image("file:src/explos1.png"));
 		explose.setViewport(new Rectangle2D(0, 0, 25,25));
 
-		explose.relocate(x, y);
+		explose.relocate(x-(25/2), y-(25/2));
 		isFinished = false;
 		this.setCycleDuration(Duration.millis(200));
 		this.p= p ;

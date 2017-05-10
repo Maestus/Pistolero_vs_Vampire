@@ -17,9 +17,9 @@ public class Pistoleros extends Character{
 		
 	}
 	public boolean shoot(){
-		if(reloadTime==20 && gun.nbBullet !=0){
+		if(reloadTime==20 && gun.nbBullet.getValue() !=0){
 			reloadTime = 0;
-			gun.nbBullet--;
+			gun.nbBullet.setValue(gun.nbBullet.getValue()-1);
 			return true;
 		}
 		else
@@ -33,7 +33,7 @@ public class Pistoleros extends Character{
 		if(!getHurt){
 			getHurt = true;
 			hurtTime=0;
-			life-=dam;
+			life.setValue(life.getValue()-dam);
 			return true;
 		}
 		else

@@ -17,7 +17,7 @@ public class Vampire extends Character{
 		return sex;
 	}
 	public boolean getHurt(int dam){
-		life-=dam;
+		life.setValue(life.getValue()-dam);
 		return true;
 	}
 	public void setSex(boolean sex) {

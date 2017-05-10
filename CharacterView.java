@@ -4,7 +4,6 @@ import javafx.scene.layout.Pane;
 public class CharacterView extends SpriteView{
 	protected Character charact;
 	protected AnimationCharacter walking;
-
 	public CharacterView(String imagePath, Pane p,Character charact) {
 		super(imagePath, p);
 		this.charact = charact;

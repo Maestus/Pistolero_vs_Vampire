@@ -145,7 +145,7 @@ public class MenuPrincipal extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        menuData.add("Play");
+       menuData.add("Play");
         menuData.add("Game Options");
         menuData.add("Exit");
         
@@ -158,7 +158,7 @@ public class MenuPrincipal extends Application {
         setting = new SettingMenu(this);
 
         stage = primaryStage;
-        
+      
         Scene scene = new Scene(root);
         primaryStage.setTitle("FxBattle");
         primaryStage.setScene(scene);

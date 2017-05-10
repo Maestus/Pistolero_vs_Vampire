@@ -1,27 +1,40 @@
 import java.util.ArrayList;
 
-
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 public class ContainerView {
+	public static double WIDTH = 1270;
+	public static double HEIGHT = 620;
 	public Container container;
 	private PistoleroView player;
-	private ArrayList<BulletView> bullets;
-	private ArrayList<VampireView> vamps;
-	private ArrayList<ObstacleView>  obstacles;
-	private ArrayList<AnimationExplosion>  animation;
+	private SimpleListProperty<BulletView> bullets;
+	private SimpleListProperty<VampireView> vamps;
+	private SimpleListProperty<ObstacleView>  obstacles;
+	
 
+	private ArrayList<AnimationExplosion>  animation;
+	Label tv;
 	Pane p;
 
 	public ContainerView(Container container,Pane p){
 		this.p = p;
+		ImageView bg = new ImageView(new Image("file:src/bg.png"));
+		p.getChildren().add(bg);
+		bg.setFitWidth(Game.WIDTH);
+        bg.setFitHeight(Game.Height-100);
+		
 		this.container = container;
-		player = new PistoleroView(container.pist,p);
-		vamps=new ArrayList<VampireView>();
-		bullets =new ArrayList<BulletView>();
-		obstacles =new ArrayList<ObstacleView>();
+		setPlayer(new PistoleroView(container.pist,p));
+		vamps=new SimpleListProperty<VampireView>(FXCollections.observableArrayList());
+		bullets =new SimpleListProperty<BulletView>(FXCollections.observableArrayList());
+		obstacles =new SimpleListProperty<ObstacleView>(FXCollections.observableArrayList());
 
-		player.add();
+		getPlayer().add();
 		for(int i=0;i<container.vampList.size();i++){
 			vamps.add(new VampireView(p,container.vampList.get(i)));
 			vamps.get(i).add();
@@ -33,6 +46,8 @@ public class ContainerView {
 			System.out.println("add");
 		}
 		animation = new ArrayList<AnimationExplosion>();
+		
+		
 	}
 
 	public void update(){
@@ -41,11 +56,11 @@ public class ContainerView {
 	}
 
 	public void relocateAll(){
-		player.update();
-		if(((Pistoleros)player.getCharact()).getHurt)
-			player.imageView.setOpacity(0.4);
+		getPlayer().update();
+		if(((Pistoleros)getPlayer().getCharact()).getHurt)
+			getPlayer().imageView.setOpacity(0.4);
 		else
-			player.imageView.setOpacity(1);
+			getPlayer().imageView.setOpacity(1);
 		for(int i=0;i<vamps.size();i++){
 			vamps.get(i).update();
 		}
@@ -89,7 +104,22 @@ public class ContainerView {
 			
 		}
 		
-		if(!player.getCharact().isAlive())
-			player.remove();
+		if(!getPlayer().getCharact().isAlive())
+			getPlayer().remove();
+	}
+	public SimpleListProperty<VampireView> getVamps() {
+		return vamps;
+	}
+
+	public void setVamps(SimpleListProperty<VampireView> vamps) {
+		this.vamps = vamps;
+	}
+
+	public PistoleroView getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(PistoleroView player) {
+		this.player = player;
 	}
 }

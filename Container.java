@@ -1,12 +1,19 @@
 import java.util.ArrayList;
 
+import javafx.beans.property.SimpleDoubleProperty;
+
 public class Container {
 	public ArrayList<Vampire> vampList;
 	public ArrayList<Bullet> bullets;
 	public ArrayList<Obstacle> obstacles;
 	public Pistoleros pist;
+	SimpleDoubleProperty gameSpeedVampire;
+	SimpleDoubleProperty gameSpeedPistolero;
+
 	int change;
 	int []choix;
+	boolean pause;
+	private int pauseTime;
 	public Container(ArrayList<Vampire> vampList, Pistoleros pist,	ArrayList<Obstacle> obstacles) {
 		this.vampList = vampList;
 		bullets = new ArrayList<Bullet>();
@@ -14,31 +21,86 @@ public class Container {
 		this.obstacles=obstacles;
 		choix = new int[vampList.size()];
 		change=0;
+		gameSpeedVampire = new SimpleDoubleProperty();
+		gameSpeedPistolero =  new SimpleDoubleProperty();
+		pauseTime=20;
+		pause = false;
 	}
 	public void update(double speed){
-		
-		if(pist.kc.moveUp()){
+		if(pist.kc.pause() && pauseTime==20){
+			pause = pause?false:true;
+			pauseTime=0;
+		}
+		if(!pause){
 			
+			pistMove(speed);
+			bulletMove(speed);
+			updateTime();
+			vampMove(speed);
+			checkCollides(speed);
+
+		}
+		else{
+			stopVampire();
+			if(pauseTime < 20)
+				pauseTime++;
+		}
+	}
+	
+	public void updateTime(){
+		if(pauseTime < 20)
+			pauseTime++;
+		if(pist.reloadTime != 20)
+			pist.reloadTime++;
+		if(pist.hurtTime !=50){
+			pist.hurtTime++;
+			if(pist.hurtTime==50)
+				pist.getHurt=false;
+		}
+		
+	}
+	
+	
+	
+	
+	public void bulletMove(double speed){
+		for(int i=0;i<bullets.size();i++){
+			bullets.get(i).update(speed);
+		}
+		if(pist.gun.nbBullet.getValue()==0){
+			if(!pist.gun.reload())
+				pist.gun.reloadTime++;
+		}
+		if(pist.kc.moveSpace() && pist.shoot()){
+			Bullet bulls = new Bullet(pist,400,10,10,0,0);
+			bullets.add(bulls);
+		}
+	}
+	
+	
+	public void pistMove(double speed){
+		if(pist.kc.moveUp()){
+
 			pist.offsetY=0;
 			pist.moveUp();
 			pist.sens=0;
 		}
 		else if(pist.kc.moveDown()){
-			
-				pist.offsetY=36*2;
+
+			pist.offsetY=36*2;
 			pist.moveDown();
 			pist.sens=2;
 
 		}	
 		else if(pist.kc.moveRight()){
-			
+
 			pist.offsetY=36;
 			pist.moveRight();
 			pist.sens=1;
 
 		}
 		else if(pist.kc.moveLeft()){
-			
+
 			pist.offsetY=36*3;
 			pist.moveLeft();
 			pist.sens=3;
@@ -48,76 +110,68 @@ public class Container {
 			pist.stopVert();
 		if(!pist.kc.moveDown() && !pist.kc.moveUp())
 			pist.stopHor();
-		
-		for(int i=0;i<bullets.size();i++){
-			bullets.get(i).update(speed);
+	}
+	
+	public void stopVampire(){
+		for(int i=0;i<vampList.size();i++){
+			vampList.get(i).moveX=0;
+			vampList.get(i).moveY=0;
 		}
-		if(pist.kc.moveSpace() && pist.shoot()){
-			Bullet bulls = new Bullet(pist,400,10,10,0,0);
-			bullets.add(bulls);
-			System.out.println("click");
-		}
-		if(pist.reloadTime != 20)
-			pist.reloadTime++;
-		if(pist.hurtTime !=50){
-			pist.hurtTime++;
-			if(pist.hurtTime==50)
-				pist.getHurt=false;
-		}
+	}
+	
+	public void vampMove(double speed){
 		for(int i=0;i<vampList.size();i++){
 			if(change== 30)
 				change =0;
 			if(change==0){
 				choix [i]= (int) (Math.random()*4);
 			}
-			
-			
-			
-			switch(choix[i]){
-				case 0:
-					vampList.get(i).moveRight();
-					vampList.get(i).offsetY=36;
-					vampList.get(i).moveY=0;
-					vampList.get(i).sens=1;
-					break;
-				case 1:
-					vampList.get(i).moveLeft();
-					vampList.get(i).offsetY=3*36;
-					vampList.get(i).moveY=0;
-					vampList.get(i).sens=3;
 
-					break;
-				case 2:
-					vampList.get(i).moveUp();
-					vampList.get(i).offsetY=0;
-					vampList.get(i).moveX=0;
-					vampList.get(i).sens=0;
-					break;
-				case 3:
-					vampList.get(i).moveDown();
-					vampList.get(i).offsetY=2*36;
-					vampList.get(i).moveX=0;
-					vampList.get(i).sens = 2;
-					break;	
+
+
+			switch(choix[i]){
+			case 0:
+				vampList.get(i).moveRight();
+				vampList.get(i).offsetY=36;
+				vampList.get(i).moveY=0;
+				vampList.get(i).sens=1;
+				break;
+			case 1:
+				vampList.get(i).moveLeft();
+				vampList.get(i).offsetY=3*36;
+				vampList.get(i).moveY=0;
+				vampList.get(i).sens=3;
+
+				break;
+			case 2:
+				vampList.get(i).moveUp();
+				vampList.get(i).offsetY=0;
+				vampList.get(i).moveX=0;
+				vampList.get(i).sens=0;
+				break;
+			case 3:
+				vampList.get(i).moveDown();
+				vampList.get(i).offsetY=2*36;
+				vampList.get(i).moveX=0;
+				vampList.get(i).sens = 2;
+				break;	
 			}
-			vampList.get(i).move(speed);
+			vampList.get(i).move(speed*gameSpeedVampire.getValue());
 		}
 		change++;
-		checkCollides(speed);
-		
 
 	}
 	public void checkCollides(double speed){
 		for(int i=0;i<vampList.size();i++){
 			for(int j=i+1;j<vampList.size();j++){
 				if(vampList.get(i).collides(vampList.get(j)) || vampList.get(j).collides(vampList.get(i))){
-					vampList.get(i).life=0;
+					vampList.get(i).life.setValue(0);
 					break;
 				}
 			}
 			for(int j=0;j<bullets.size();j++){
 				if((vampList.get(i).collides(bullets.get(j))|| bullets.get(j).collides(vampList.get(i))) && vampList.get(i).isAlive() && !bullets.get(j).explose){
-					vampList.get(i).life--;
+					vampList.get(i).getHurt(pist.getDammage());
 					bullets.get(j).explose=true;
 					break;
 				}
@@ -138,7 +192,7 @@ public class Container {
 						vampList.get(i).posY-=vampList.get(i).speed*speed;
 					else
 						vampList.get(i).posX +=vampList.get(i).speed*speed;
-						
+
 
 				}
 			}			
@@ -154,12 +208,18 @@ public class Container {
 					pist.posY-=(pist.speed*speed);
 				else
 					pist.posX +=pist.speed*speed;
-					
 
+
+			}
+			for(int j=0;j<bullets.size();j++){
+				if((obstacles.get(i).collides(bullets.get(j))|| bullets.get(j).collides(obstacles.get(i)))  && !bullets.get(j).explose)
+					bullets.get(j).explose = true;
 			}
 		}
 	}
 	
-	
-	
 }
+
+
+
+
