@@ -48,15 +48,15 @@ public abstract class Sprite {
 	public void move(double time){
 		double deplX = moveX*time;
 		double deplY = moveY*time;
-		if(posX+deplX >maxX-width)
+		if(posX+deplX >=maxX-width)
 			posX =maxX-width;
-		else if(posX+deplX <0)
+		else if(posX+deplX <=0)
 			posX =0;
 		else 
 			posX += deplX;
-		if(posY+deplY >maxY-height)
+		if(posY+deplY >=maxY-height)
 			posY =maxY-height;
-		else if(deplY+posY <0)
+		else if(deplY+posY <=0)
 			posY =0;
 		else 
 			posY += deplY;
@@ -93,8 +93,8 @@ public abstract class Sprite {
 	}
 	public boolean collides(Sprite s){
 
-		if((s.posX<posX && posX < s.posX+s.width && s.posY < posY && posY < s.posY+s.height) || (s.posX < posX +width && posX+width < s.posX+ s.width && s.posY < posY && posY < s.posY+s.height ) 
-				|| (s.posX<posX && posX < s.posX+s.width && s.posY < posY+height && posY+height < s.posY+s.height) && (s.posX < posX +width && posX+width < s.posX+ s.width && s.posY <= posY+height && posY+height <= s.posY+s.height) ) {
+		if((s.posX<=posX && posX <= s.posX+s.width && s.posY <= posY && posY <= s.posY+s.height) || (s.posX <= posX +width && posX+width <= s.posX+ s.width && s.posY <= posY && posY <= s.posY+s.height ) 
+				|| (s.posX<=posX && posX <= s.posX+s.width && s.posY <= posY+height && posY+height <= s.posY+s.height) && (s.posX <= posX +width && posX+width <= s.posX+ s.width && s.posY <= posY+height && posY+height <= s.posY+s.height) ) {
 			System.out.println("premier cas");
 			return true;
 		}
@@ -102,5 +102,12 @@ public abstract class Sprite {
 			System.out.println("deuxieme cas")*/
 		else return false;
 			
+	}
+	public boolean inBorder(){
+		if(posX==0 || posY==0 || posX+width==maxX || posX+height==maxY)
+			return true;
+		else
+			return false;
+					
 	}
 }

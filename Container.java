@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 public class Container {
 	public ArrayList<Vampire> vampList;
@@ -9,7 +10,8 @@ public class Container {
 	public Pistoleros pist;
 	SimpleDoubleProperty gameSpeedVampire;
 	SimpleDoubleProperty gameSpeedPistolero;
-
+	SimpleIntegerProperty timer;
+	double timerI;
 	int change;
 	int []choix;
 	boolean pause;
@@ -23,6 +25,8 @@ public class Container {
 		change=0;
 		gameSpeedVampire = new SimpleDoubleProperty();
 		gameSpeedPistolero =  new SimpleDoubleProperty();
+		timer = new SimpleIntegerProperty() ;
+
 		pauseTime=20;
 		pause = false;
 	}
@@ -32,7 +36,8 @@ public class Container {
 			pauseTime=0;
 		}
 		if(!pause){
-			
+			timerI =timerI+speed;
+			timer.setValue(timerI);
 			pistMove(speed);
 			bulletMove(speed);
 			updateTime();
@@ -41,12 +46,12 @@ public class Container {
 
 		}
 		else{
-			stopVampire();
+			stop();
 			if(pauseTime < 20)
 				pauseTime++;
 		}
 	}
-	
+
 	public void updateTime(){
 		if(pauseTime < 20)
 			pauseTime++;
@@ -57,12 +62,12 @@ public class Container {
 			if(pist.hurtTime==50)
 				pist.getHurt=false;
 		}
-		
+
 	}
-	
-	
-	
-	
+
+
+
+
 	public void bulletMove(double speed){
 		for(int i=0;i<bullets.size();i++){
 			bullets.get(i).update(speed);
@@ -76,8 +81,8 @@ public class Container {
 			bullets.add(bulls);
 		}
 	}
-	
-	
+
+
 	public void pistMove(double speed){
 		if(pist.kc.moveUp()){
 
@@ -105,25 +110,30 @@ public class Container {
 			pist.moveLeft();
 			pist.sens=3;
 		}
-		pist.move(speed);
+		pist.move(speed*gameSpeedPistolero.getValue());
 		if(!pist.kc.moveLeft() && !pist.kc.moveRight())
 			pist.stopVert();
 		if(!pist.kc.moveDown() && !pist.kc.moveUp())
 			pist.stopHor();
 	}
-	
-	public void stopVampire(){
+
+	public void stop(){
+		pist.moveX=0;
+		pist.moveY=0;
 		for(int i=0;i<vampList.size();i++){
 			vampList.get(i).moveX=0;
 			vampList.get(i).moveY=0;
 		}
 	}
-	
+
 	public void vampMove(double speed){
+		System.out.println(vampList.size());
 		for(int i=0;i<vampList.size();i++){
-			if(change== 30)
-				change =0;
-			if(change==0){
+			if(vampList.get(i).getChange()>=(vampList.get(i).getTimeChange()/gameSpeedVampire.getValue())){
+				vampList.get(i).setChange(0);
+				vampList.get(i).changeTimeChange();
+			}
+			if(vampList.get(i).getChange()==0){
 				choix [i]= (int) (Math.random()*4);
 			}
 
@@ -157,6 +167,8 @@ public class Container {
 				break;	
 			}
 			vampList.get(i).move(speed*gameSpeedVampire.getValue());
+			System.out.println("moving ma men "+vampList.get(i).posX+ " "+vampList.get(i).posY);
+			vampList.get(i).updateChange();
 		}
 		change++;
 
@@ -166,6 +178,8 @@ public class Container {
 			for(int j=i+1;j<vampList.size();j++){
 				if(vampList.get(i).collides(vampList.get(j)) || vampList.get(j).collides(vampList.get(i))){
 					vampList.get(i).life.setValue(0);
+					System.out.println("on s'est frappé");
+					System.out.println(vampList.size());
 					break;
 				}
 			}
@@ -184,6 +198,7 @@ public class Container {
 			for(int j =0;j<obstacles.size();j++){
 				if(vampList.get(i).collides(obstacles.get(j))|| obstacles.get(j).collides(vampList.get(i))){
 					System.out.println("collission arbre");
+
 					if(vampList.get(i).sens==0)
 						vampList.get(i).posY+=vampList.get(i).speed*speed;
 					else if(vampList.get(i).sens==1)
@@ -192,22 +207,53 @@ public class Container {
 						vampList.get(i).posY-=vampList.get(i).speed*speed;
 					else
 						vampList.get(i).posX +=vampList.get(i).speed*speed;
-
-
+					vampList.get(i).setChange(vampList.get(i).getTimeChange());
 				}
 			}			
 		}
+		obstacleCollides(speed);
+
+	}
+	public void obstacleCollides(double speed){
 		for(int i =0;i<obstacles.size();i++){
 			if(pist.collides(obstacles.get(i))|| obstacles.get(i).collides(pist)){
 				System.out.println("collission arbre");
-				if(pist.sens==0)
-					pist.posY+=(pist.speed*speed);
-				else if(pist.sens==1)
-					pist.posX-=(pist.speed*speed);
-				else if(pist.sens==2)
-					pist.posY-=(pist.speed*speed);
-				else
-					pist.posX +=pist.speed*speed;
+				if(pist.sens==0){
+					if(pist.speed>obstacles.get(i).poids ){
+						obstacles.get(i).moveY-=(pist.speed-obstacles.get(i).poids);
+						obstacles.get(i).move(speed);
+						obstacles.get(i).moveY=0;
+						
+					}
+						pist.posY =obstacles.get(i).posY+obstacles.get(i).height+2;
+				}
+				else if(pist.sens==1){
+					if(pist.speed>obstacles.get(i).poids ){
+						obstacles.get(i).moveX+=(pist.speed-obstacles.get(i).poids);
+						obstacles.get(i).move(speed);
+						obstacles.get(i).moveX=0;
+					}
+						pist.posX=obstacles.get(i).posX-pist.width-2;
+				}
+				else if(pist.sens==2){
+					if(pist.speed>obstacles.get(i).poids ){
+						obstacles.get(i).moveY+=(pist.speed-obstacles.get(i).poids);
+						obstacles.get(i).move(speed);
+						obstacles.get(i).moveY=0;
+						
+					}
+					pist.posY =obstacles.get(i).posY-pist.height-2;
+
+				}
+				else{
+					if(pist.speed>obstacles.get(i).poids ){
+						obstacles.get(i).moveX-=(pist.speed-obstacles.get(i).poids);
+						obstacles.get(i).move(speed);
+						obstacles.get(i).moveX=0;
+					}
+
+					pist.posX =obstacles.get(i).posX+obstacles.get(i).width+2;
+				}
 
 
 			}
@@ -217,7 +263,7 @@ public class Container {
 			}
 		}
 	}
-	
+
 }
 
 

@@ -12,7 +12,7 @@ public class ContainerView {
 	public static double HEIGHT = 620;
 	public Container container;
 	private PistoleroView player;
-	private SimpleListProperty<BulletView> bullets;
+	private ArrayList<BulletView> bullets;
 	private SimpleListProperty<VampireView> vamps;
 	private SimpleListProperty<ObstacleView>  obstacles;
 	
@@ -23,34 +23,20 @@ public class ContainerView {
 
 	public ContainerView(Container container,Pane p){
 		this.p = p;
-		ImageView bg = new ImageView(new Image("file:src/bg.png"));
-		p.getChildren().add(bg);
-		bg.setFitWidth(Game.WIDTH);
-        bg.setFitHeight(Game.Height-100);
-		
+		loadBackGround();
 		this.container = container;
 		setPlayer(new PistoleroView(container.pist,p));
-		vamps=new SimpleListProperty<VampireView>(FXCollections.observableArrayList());
-		bullets =new SimpleListProperty<BulletView>(FXCollections.observableArrayList());
-		obstacles =new SimpleListProperty<ObstacleView>(FXCollections.observableArrayList());
-
+		bullets =new ArrayList<BulletView>();
 		getPlayer().add();
-		for(int i=0;i<container.vampList.size();i++){
-			vamps.add(new VampireView(p,container.vampList.get(i)));
-			vamps.get(i).add();
-		}
-		System.out.println("connt"+container.obstacles.size());
-		for(int i=0;i<container.obstacles.size();i++){
-			obstacles.add(new ObstacleView(p,container.obstacles.get(i)));
-			obstacles.get(i).add();
-			System.out.println("add");
-		}
+		loadVampire();
+		loadObstacle();
 		animation = new ArrayList<AnimationExplosion>();
 		
 		
 	}
 
 	public void update(){
+		p.requestFocus();
 		relocateAll();
 		removingDeath();
 	}
@@ -70,6 +56,9 @@ public class ContainerView {
 				bullets.get(i).add();
 			}
 			bullets.get(i).update();
+		}
+		for(int i=0;i<obstacles.size();i++){
+			obstacles.get(i).imageView.relocate(obstacles.get(i).caisse.posX,obstacles.get(i).caisse.posY);
 		}
 	}
 	
@@ -121,5 +110,26 @@ public class ContainerView {
 
 	public void setPlayer(PistoleroView player) {
 		this.player = player;
+	}
+	public void loadBackGround(){
+		ImageView bg = new ImageView(new Image("file:src/bg2.png"));
+		p.getChildren().add(bg);
+		bg.setFitWidth(Game.WIDTH);
+        bg.setFitHeight(Game.Height-100);
+	}
+	public void loadVampire(){
+		vamps=new SimpleListProperty<VampireView>(FXCollections.observableArrayList());
+		for(int i=0;i<container.vampList.size();i++){
+			vamps.add(new VampireView(p,container.vampList.get(i)));
+			vamps.get(i).add();
+		}
+	}
+	public void loadObstacle(){
+		obstacles =new SimpleListProperty<ObstacleView>(FXCollections.observableArrayList());
+
+		for(int i=0;i<container.obstacles.size();i++){
+			obstacles.add(new ObstacleView(p,container.obstacles.get(i)));
+			obstacles.get(i).add();
+		}
 	}
 }

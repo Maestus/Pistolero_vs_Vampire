@@ -63,7 +63,7 @@ public class MenuPrincipal extends Application {
         }
 
         text = new Text(name_with_spacing);
-        text.setFont(Font.loadFont("file:res/discoduckchromeital.ttf", 74));
+        text.setFont(Font.loadFont("file:src/discoduckchromeital.ttf", 74));
         text.setFill(Color.rgb(255, 180, 67));
         
         title.getChildren().addAll(text);
