@@ -167,13 +167,13 @@ public class Container {
 				break;	
 			}
 			vampList.get(i).move(speed*gameSpeedVampire.getValue());
-			System.out.println("moving ma men "+vampList.get(i).posX+ " "+vampList.get(i).posY);
 			vampList.get(i).updateChange();
 		}
 		change++;
 
 	}
 	public void checkCollides(double speed){
+
 		for(int i=0;i<vampList.size();i++){
 			for(int j=i+1;j<vampList.size();j++){
 				if(vampList.get(i).collides(vampList.get(j)) || vampList.get(j).collides(vampList.get(i))){
@@ -207,21 +207,24 @@ public class Container {
 						vampList.get(i).posY-=vampList.get(i).speed*speed;
 					else
 						vampList.get(i).posX +=vampList.get(i).speed*speed;
-					vampList.get(i).setChange(vampList.get(i).getTimeChange());
+					vampList.get(i).setChange(vampList.get(i).getTimeChange()/gameSpeedVampire.getValue());
 				}
 			}			
 		}
 		obstacleCollides(speed);
 
+
 	}
 	public void obstacleCollides(double speed){
 		for(int i =0;i<obstacles.size();i++){
 			if(pist.collides(obstacles.get(i))|| obstacles.get(i).collides(pist)){
-				System.out.println("collission arbre");
 				if(pist.sens==0){
 					if(pist.speed>obstacles.get(i).poids ){
-						obstacles.get(i).moveY-=(pist.speed-obstacles.get(i).poids);
+						double oldY = obstacles.get(i).posY;
+						obstacles.get(i).moveY=-(pist.speed-obstacles.get(i).poids);
 						obstacles.get(i).move(speed);
+						if(collidesVamps(obstacles.get(i)))
+							obstacles.get(i).posY=oldY;
 						obstacles.get(i).moveY=0;
 						
 					}
@@ -229,16 +232,23 @@ public class Container {
 				}
 				else if(pist.sens==1){
 					if(pist.speed>obstacles.get(i).poids ){
-						obstacles.get(i).moveX+=(pist.speed-obstacles.get(i).poids);
+						double oldX = obstacles.get(i).posX;
+
+						obstacles.get(i).moveX=(pist.speed-obstacles.get(i).poids);
 						obstacles.get(i).move(speed);
+						if(collidesVamps(obstacles.get(i)))
+							obstacles.get(i).posX=oldX;
 						obstacles.get(i).moveX=0;
 					}
 						pist.posX=obstacles.get(i).posX-pist.width-2;
 				}
 				else if(pist.sens==2){
 					if(pist.speed>obstacles.get(i).poids ){
-						obstacles.get(i).moveY+=(pist.speed-obstacles.get(i).poids);
+						double oldY = obstacles.get(i).posY;
+						obstacles.get(i).moveY=(pist.speed-obstacles.get(i).poids);
 						obstacles.get(i).move(speed);
+						if(collidesVamps(obstacles.get(i)))
+							obstacles.get(i).posY=oldY;
 						obstacles.get(i).moveY=0;
 						
 					}
@@ -247,8 +257,12 @@ public class Container {
 				}
 				else{
 					if(pist.speed>obstacles.get(i).poids ){
-						obstacles.get(i).moveX-=(pist.speed-obstacles.get(i).poids);
+						double oldX = obstacles.get(i).posX;
+
+						obstacles.get(i).moveX=-(pist.speed-obstacles.get(i).poids);
 						obstacles.get(i).move(speed);
+						if(collidesVamps(obstacles.get(i)))
+							obstacles.get(i).posX=oldX;
 						obstacles.get(i).moveX=0;
 					}
 
@@ -262,6 +276,18 @@ public class Container {
 					bullets.get(j).explose = true;
 			}
 		}
+	}
+	
+	public boolean collidesVamps(Sprite s){
+		for(int i=0;i<vampList.size();i++){
+			if(s.collides(vampList.get(i))||vampList.get(i).collides(s)){
+				if(vampList.get(i).getChange()!=0)
+				vampList.get(i).setChange(vampList.get(i).getTimeChange()/gameSpeedVampire.getValue());
+				System.out.println("normal");
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

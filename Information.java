@@ -51,7 +51,7 @@ public class Information extends VBox{
 		vampire.getChildren().addAll(vampireNumber,vampireSpeed,time);
 		
 		
-		HBox pistEmpl  = new HBox();
+		HBox pistEmpl  = new HBox(5);
 		pistEmpl.setAlignment(Pos.CENTER);
 
 		HBox pistolerosBullet = new HBox(5);

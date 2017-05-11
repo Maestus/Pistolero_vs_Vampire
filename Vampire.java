@@ -2,7 +2,7 @@
 public class Vampire extends Character{
 	private int dammage;
 	private boolean sex;
-	private int change;
+	private double change;
 	private int TimeChange;
 	public Vampire(double posX, double posY, double speed, double maxX, double maxY, double width, double height, double offsetX,double offsetY,int life,int dammage,boolean sex) {
 		super(posX, posY, speed, maxX, maxY, width, height,offsetX,offsetY, life);
@@ -27,11 +27,11 @@ public class Vampire extends Character{
 	public void setSex(boolean sex) {
 		this.sex = sex;
 	}
-	public int getChange(){
+	public double getChange(){
 		return change;
 	}
-	public void setChange(int ch){
-		change = ch;
+	public void setChange(double d){
+		change = d;
 	}
 	public void updateChange(){
 		change++;
