@@ -7,7 +7,7 @@ public class AnimationCharacter extends Animation {
 		this.count=3;
 		this.lastIndex=0;
 		this.charView=charView;
-		setCycleDuration(Duration.millis(250));
+		setCycleDuration(Duration.millis(400));
 		this.setCycleCount(INDEFINITE);
 
 	}
@@ -17,8 +17,8 @@ public class AnimationCharacter extends Animation {
 		int index = Math.min((int) (k * count), count - 1);
 		if (index != lastIndex) {
 			if(charView.getCharact().getMoveY()!=0 ||charView.getCharact().getMoveX()!=0){
-				int x = (int) ((index % 32) * 32 + charView.getCharact().offsetX);
-				int y = (int) ((index / 32) * 32 + charView.getCharact().offsetY);
+				int x = (int) ((index % charView.getCharact().width) * charView.getCharact().width + charView.getCharact().offsetX);
+				int y = (int) ((index / charView.getCharact().height) * charView.getCharact().height + charView.getCharact().offsetY);
 				charView.getView().setViewport(new Rectangle2D(x, y, charView.getCharact().width, charView.getCharact().height));
 				lastIndex = index;
 			}

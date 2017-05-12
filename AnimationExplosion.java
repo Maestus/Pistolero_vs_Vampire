@@ -24,7 +24,6 @@ public class AnimationExplosion extends Animation{
 	        public void handle(ActionEvent actionEvent) {
 	        	p.getChildren().remove(explose);
 	        	isFinished = true;
-				System.out.println("on est la");
 	        }
 	    });
         this.count =12;

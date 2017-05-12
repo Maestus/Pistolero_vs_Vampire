@@ -2,11 +2,9 @@
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
 import javafx.animation.ScaleTransition;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -15,38 +13,33 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 
-public class MenuPrincipal extends Application {
+public class MenuPrincipal {
 
-    protected static final int WIDTH = 1280;
-    protected static final int HEIGHT = 720;
-    double lineX = WIDTH / 2 - 200;
-    double lineY = HEIGHT / 4 + 70;
-    boolean menuBox_already_add_in_pane = false;
-
-    protected Main game;
     protected ImageView background;
     protected Pane title;
-    protected Stage stage;
-    protected Pane root = new Pane();
+    protected Main game;
     protected VBox menuBox = new VBox();
     protected Line line;
     protected static SettingMenu setting;
+    double lineX;
+    double lineY;
+    boolean menuBox_already_add_in_pane = false;
+    KeyController kc;
     
     protected ArrayList<String> menuData = new ArrayList<>();
  
     
     protected void addBackground() {
         ImageView background = new ImageView(new Image("file:src/bg_menu.png"));
-        background.setFitWidth(WIDTH);
-        background.setFitHeight(HEIGHT);
+        background.setFitWidth(game.pane.getPrefWidth());
+        background.setFitHeight(game.pane.getPrefHeight());
 
-        root.getChildren().add(background);
+        game.pane.getChildren().add(background);
     }
 
 	protected void addTitle() {
@@ -69,10 +62,10 @@ public class MenuPrincipal extends Application {
         title.getChildren().addAll(text);
 
         
-        title.setTranslateX(WIDTH / 2 - text.getLayoutBounds().getWidth() / 2);
-        title.setTranslateY(HEIGHT / 4);
+        title.setTranslateX(game.pane.getPrefWidth() / 2 - text.getLayoutBounds().getWidth() / 2);
+        title.setTranslateY(game.pane.getPrefHeight() / 4);
 
-        root.getChildren().add(title);
+        game.pane.getChildren().add(title);
     }
 
     protected void addLine(double x, double y) {
@@ -81,7 +74,7 @@ public class MenuPrincipal extends Application {
         line.setStroke(Color.WHITE);
         line.setScaleY(0);
 
-        root.getChildren().add(line);
+        game.pane.getChildren().add(line);
     }
 
     protected void startAnimation() {
@@ -116,13 +109,13 @@ public class MenuPrincipal extends Application {
                 item.setOnMouseClicked(e -> Platform.exit());
             } else if(data.equals("Play")){
             	item.setOnMouseClicked(e -> {
-            		root.getChildren().remove(menuBox);
-            		root.getChildren().remove(title);
-            		root.getChildren().remove(line);
-            		root.getChildren().remove(background);
-            		game = new Main(root, setting.configuration);
+            		game.pane.getChildren().remove(menuBox);
+            		game.pane.getChildren().remove(title);
+            		game.pane.getChildren().remove(line);
+            		game.pane.getChildren().remove(background);
             		try {
-						game.start(stage);
+            			game.loadKey(kc);
+						
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -137,15 +130,19 @@ public class MenuPrincipal extends Application {
             menuBox.getChildren().addAll(item);
         });
 		if(!menuBox_already_add_in_pane){
-        	root.getChildren().add(menuBox);
+        	game.pane.getChildren().add(menuBox);
         	menuBox_already_add_in_pane = true;
 		}
         startAnimation();
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-       menuData.add("Play");
+    public void start(Main m) {
+    	game = m;
+    	
+      	lineX = game.pane.getPrefWidth() / 2 - 200;
+        lineY = game.pane.getPrefHeight() / 4 + 70;
+    	
+    	menuData.add("Play");
         menuData.add("Game Options");
         menuData.add("Exit");
         
@@ -156,16 +153,9 @@ public class MenuPrincipal extends Application {
         addMenu(lineX + 5, lineY + 5);
 
         setting = new SettingMenu(this);
-
-        stage = primaryStage;
-      
-        Scene scene = new Scene(root);
-        primaryStage.setTitle("FxBattle");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        
+        kc = new KeyController(game.pane.getScene(), setting.configuration);
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+
 }

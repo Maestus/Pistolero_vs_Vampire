@@ -15,7 +15,7 @@ public class Container {
 	int change;
 	int []choix;
 	boolean pause;
-	private int pauseTime;
+	public int pauseTime;
 	public Container(ArrayList<Vampire> vampList, Pistoleros pist,	ArrayList<Obstacle> obstacles) {
 		this.vampList = vampList;
 		bullets = new ArrayList<Bullet>();
@@ -39,7 +39,7 @@ public class Container {
 			timerI =timerI+speed;
 			timer.setValue(timerI);
 			pistMove(speed);
-			bulletMove(speed);
+			bulletMove(speed*6);
 			updateTime();
 			vampMove(speed);
 			checkCollides(speed);
@@ -127,7 +127,7 @@ public class Container {
 	}
 
 	public void vampMove(double speed){
-		System.out.println(vampList.size());
+		//System.out.println(vampList.size());
 		for(int i=0;i<vampList.size();i++){
 			if(vampList.get(i).getChange()>=(vampList.get(i).getTimeChange()/gameSpeedVampire.getValue())){
 				vampList.get(i).setChange(0);
@@ -185,6 +185,7 @@ public class Container {
 			}
 			for(int j=0;j<bullets.size();j++){
 				if((vampList.get(i).collides(bullets.get(j))|| bullets.get(j).collides(vampList.get(i))) && vampList.get(i).isAlive() && !bullets.get(j).explose){
+					pist.up_kill_scoring();
 					vampList.get(i).getHurt(pist.getDammage());
 					bullets.get(j).explose=true;
 					break;
@@ -192,8 +193,9 @@ public class Container {
 			}
 			if((vampList.get(i).collides(pist) || pist.collides(vampList.get(i))) && pist.isAlive() && vampList.get(i).isAlive()){
 				System.out.println("collision");
-				if(pist.getHurt(vampList.get(i).getDammage()))
+				if(pist.getHurt(vampList.get(i).getDammage())){
 					System.out.println("getHurt");
+				}
 			}
 			for(int j =0;j<obstacles.size();j++){
 				if(vampList.get(i).collides(obstacles.get(j))|| obstacles.get(j).collides(vampList.get(i))){

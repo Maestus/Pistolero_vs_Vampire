@@ -1,5 +1,4 @@
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ObservableValue;
 
 public class Gun {
 	int damage;

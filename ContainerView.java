@@ -6,20 +6,23 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
-public class ContainerView {
-	public static double WIDTH = 1270;
-	public static double HEIGHT = 620;
+public class ContainerView extends VBox{
+	public static double WIDTH = 1280;
+	public static double HEIGHT = 720;
 	public Container container;
 	private PistoleroView player;
 	private ArrayList<BulletView> bullets;
 	private SimpleListProperty<VampireView> vamps;
 	private SimpleListProperty<ObstacleView>  obstacles;
-	
+	private AnimationBleed bleed;
 
 	private ArrayList<AnimationExplosion>  animation;
+	private ArrayList<AnimationDeath>  death;
 	Label tv;
 	Pane p;
+	private boolean begin = true;
 
 	public ContainerView(Container container,Pane p){
 		this.p = p;
@@ -31,8 +34,8 @@ public class ContainerView {
 		loadVampire();
 		loadObstacle();
 		animation = new ArrayList<AnimationExplosion>();
-		
-		
+		death = new ArrayList<AnimationDeath>();
+		bleed = new AnimationBleed(getPlayer());
 	}
 
 	public void update(){
@@ -43,10 +46,11 @@ public class ContainerView {
 
 	public void relocateAll(){
 		getPlayer().update();
-		if(((Pistoleros)getPlayer().getCharact()).getHurt)
-			getPlayer().imageView.setOpacity(0.4);
-		else
-			getPlayer().imageView.setOpacity(1);
+		if(((Pistoleros)getPlayer().getCharact()).getHurt && (bleed.isFinished || begin )){
+			bleed.isFinished = false;
+			begin = false;
+			bleed.play();
+		}
 		for(int i=0;i<vamps.size();i++){
 			vamps.get(i).update();
 		}
@@ -66,7 +70,17 @@ public class ContainerView {
 		for(int i=0;i<animation.size();i++){
 			if(animation.get(i).isFinished)
 				animation.remove(i);
+		} for(int i=0;i<death.size();i++){
+			if(death.get(i).isFinished)
+				for(int j = 0; j <  vamps.size(); j++){
+					if(death.get(i).v == vamps.get(j)){
+						vamps.get(j).remove();
+						vamps.remove(j);
+						container.vampList.remove(j);
+					}
+				}
 		}
+		
 		for(int i=0;i<container.bullets.size();i++){
 
 			if(container.bullets.get(i).explose){
@@ -85,16 +99,15 @@ public class ContainerView {
 		
 		for(int i=0;i<vamps.size();i++){
 			if(!vamps.get(i).charact.isAlive()){
-				vamps.get(i).remove();
-				vamps.remove(i);
-				container.vampList.remove(i);
-			}
-			
-			
+				death.add(new AnimationDeath(vamps.get(i)));
+				death.get(death.size()-1).play();			
+			}			
 		}
 		
-		if(!getPlayer().getCharact().isAlive())
-			getPlayer().remove();
+		if(!getPlayer().getCharact().isAlive()){
+			getPlayer().remove(); // A changer
+			((Pistoleros)getPlayer().charact).up_time_score(container.timer);
+		}
 	}
 	public SimpleListProperty<VampireView> getVamps() {
 		return vamps;
@@ -112,10 +125,10 @@ public class ContainerView {
 		this.player = player;
 	}
 	public void loadBackGround(){
-		ImageView bg = new ImageView(new Image("file:src/bg2.png"));
+		ImageView bg = new ImageView(new Image("file:src/bg.png"));
 		p.getChildren().add(bg);
-		bg.setFitWidth(Game.WIDTH);
-        bg.setFitHeight(Game.Height-100);
+		bg.setFitWidth(ContainerView.WIDTH);
+        bg.setFitHeight(ContainerView.HEIGHT);
 	}
 	public void loadVampire(){
 		vamps=new SimpleListProperty<VampireView>(FXCollections.observableArrayList());

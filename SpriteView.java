@@ -7,6 +7,8 @@ public abstract class SpriteView {
 	Pane p;
 	public SpriteView(String imagePath,Pane p){
 		this.imageView = new ImageView(new Image(imagePath));
+        this.imageView.setClip(new ImageView(imagePath));
+        imageView.setCache(true);
 		this.p = p;
 	}
 	
@@ -19,5 +21,7 @@ public abstract class SpriteView {
 	public void remove(){
 		p.getChildren().remove(this.imageView);
 	}
+	
+	
 	
 }
