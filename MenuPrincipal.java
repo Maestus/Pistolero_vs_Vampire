@@ -26,6 +26,7 @@ public class MenuPrincipal {
     protected VBox menuBox = new VBox();
     protected Line line;
     protected static SettingMenu setting;
+    protected static MapLoader loader;
     double lineX;
     double lineY;
     boolean menuBox_already_add_in_pane = false;
@@ -108,19 +109,19 @@ public class MenuPrincipal {
             } else if(data.equals("Exit")){
                 item.setOnMouseClicked(e -> Platform.exit());
             } else if(data.equals("Play")){
-            	item.setOnMouseClicked(e -> {
-            		game.pane.getChildren().remove(menuBox);
-            		game.pane.getChildren().remove(title);
-            		game.pane.getChildren().remove(line);
-            		game.pane.getChildren().remove(background);
-            		try {
-            			game.loadKey(kc);
-						
+            	item.setOnMouseClicked(e ->  loader.init());
+            		//game.pane.getChildren().remove(menuBox);
+            		//game.pane.getChildren().remove(title);
+            		//game.pane.getChildren().remove(line);
+            		//game.pane.getChildren().remove(background);
+            	/*	try {
+            			//game.loadKey(kc);
+            			//item.setOnMouseClicked(e -> setting.init());
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-            	});
+            	});*/
             }
 
             item.setTranslateX(200);
@@ -153,6 +154,7 @@ public class MenuPrincipal {
         addMenu(lineX + 5, lineY + 5);
 
         setting = new SettingMenu(this);
+        loader = new MapLoader(this);
         
         kc = new KeyController(game.pane.getScene(), setting.configuration);
     }
