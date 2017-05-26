@@ -3,14 +3,15 @@ import java.util.ArrayList;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 
 public class ContainerView extends VBox{
 	public static double WIDTH = 1280;
 	public static double HEIGHT = 720;
+	public ImageView background;
 	public Container container;
 	private PistoleroView player;
 	private ArrayList<BulletView> bullets;
@@ -24,8 +25,9 @@ public class ContainerView extends VBox{
 	Pane p;
 	private boolean begin = true;
 
-	public ContainerView(Container container,Pane p){
+	public ContainerView(Container container, ImageView b, Pane p){
 		this.p = p;
+		this.background = b;
 		loadBackGround();
 		this.container = container;
 		setPlayer(new PistoleroView(container.pist,p));
@@ -125,10 +127,9 @@ public class ContainerView extends VBox{
 		this.player = player;
 	}
 	public void loadBackGround(){
-		ImageView bg = new ImageView(new Image("file:src/bg.png"));
-		p.getChildren().add(bg);
-		bg.setFitWidth(ContainerView.WIDTH);
-        bg.setFitHeight(ContainerView.HEIGHT);
+		p.getChildren().add(background);
+		background.setFitWidth(ContainerView.WIDTH);
+		background.setFitHeight(ContainerView.HEIGHT);
 	}
 	public void loadVampire(){
 		vamps=new SimpleListProperty<VampireView>(FXCollections.observableArrayList());

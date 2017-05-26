@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 public class Game extends Pane{
@@ -15,7 +16,7 @@ public class Game extends Pane{
 	boolean on_pause = false;
     PauseMenu pause_menu;
 
-	public Game(KeyController kc){
+	public Game(KeyController kc, ImageView background){
 		pisto = new Pistoleros(0,0,100,ContainerView.WIDTH,ContainerView.HEIGHT,32,32,0,0,30,new Gun(50,"name",100),kc);
 		vamp = new ArrayList<Vampire>();
 		for(int i=0;i<20;i++)
@@ -24,7 +25,7 @@ public class Game extends Pane{
 		Obstacle.add(new Obstacle(150,150,ContainerView.WIDTH,ContainerView.HEIGHT,35,35,0,0,10));
 		pause_menu = new PauseMenu();
 		Container c = new Container(vamp,pisto,Obstacle);
-		cont = new ContainerView(c,this);
+		cont = new ContainerView(c, background, this);
 		hb = new Information(cont.getVamps(),(Pistoleros) cont.getPlayer().charact,c.timer);
 		ho = new InGameOptions(cont.getVamps(),(Pistoleros) cont.getPlayer().charact,c.timer);
 		cont.container.gameSpeedVampire.bind(ho.slidspeedVamp.valueProperty());

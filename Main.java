@@ -1,5 +1,6 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -11,10 +12,10 @@ public class Main extends Application{
 	MenuPrincipal menu;
 	Setting configurations;
 	
-	public void loadKey(KeyController k){
+	public void loadGame(KeyController k, ImageView imageView){
 		k.addListeners();
 		pane.getChildren().clear();
-		game = new Game(k);
+		game = new Game(k, imageView);
 		pane.getChildren().add(game);
 		game.start();
 	}
@@ -38,4 +39,5 @@ public class Main extends Application{
     public static void main(String[] args) {
         launch(args);
     }
+
 }
