@@ -6,11 +6,10 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 
 public class ContainerView extends VBox{
 	public static double WIDTH = 1280;
-	public static double HEIGHT = 720;
+	public static double HEIGHT = 768;
 	public ImageView background;
 	public Container container;
 	private PistoleroView player;
@@ -142,7 +141,7 @@ public class ContainerView extends VBox{
 		obstacles =new SimpleListProperty<ObstacleView>(FXCollections.observableArrayList());
 
 		for(int i=0;i<container.obstacles.size();i++){
-			obstacles.add(new ObstacleView(p,container.obstacles.get(i)));
+			obstacles.add(new ObstacleView(p,container.obstacles.get(i), container.obstacles.get(i).name));
 			obstacles.get(i).add();
 		}
 	}

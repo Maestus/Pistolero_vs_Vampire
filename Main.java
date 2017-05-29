@@ -17,7 +17,6 @@ public class Main extends Application{
 		pane.getChildren().clear();
 		game = new Game(k, imageView);
 		pane.getChildren().add(game);
-		game.start();
 	}
 	
 	public void start(Stage primaryStage) throws Exception {
