@@ -8,7 +8,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-public class Game {
+public class Game extends Pane{
 	Container c;
 	ContainerView cont;
 	Pistoleros pisto;
@@ -20,16 +20,11 @@ public class Game {
 	ArrayList<Obstacle> Obstacle = new ArrayList<Obstacle>();
 	ImageView background;
 	AnimationTimer gameloop;
-	Pane game;
 	Pane pane;
 	
 	public Game(Pane pane){
 		this.pane = pane;
-		game = new Pane();
-		game.setPrefHeight(Main.HEIGHT);
-		game.setPrefWidth(Main.WIDTH);
 	}
-	
 	
 	public void loadGame(KeyController kc, ImageView background, Pane pane){
 		kc.addListeners();
@@ -39,7 +34,7 @@ public class Game {
 			vamp.add(new Vampire(i*32,ContainerView.HEIGHT-32,100,ContainerView.WIDTH,ContainerView.HEIGHT,32,32,32*3,36*3,3,1,true));
 
 		this.background = background;
-		pane.getChildren().add(game);
+		pane.getChildren().add(this);
 	}
 	
 	public void start(){
@@ -106,13 +101,13 @@ public class Game {
 
 	public void initialize() {
 		c = new Container(vamp,pisto,Obstacle);
-		cont = new ContainerView(c, background, pane);
+		cont = new ContainerView(c, background, this);
 		hb = new Information(cont.getVamps(),(Pistoleros) cont.getPlayer().charact,c.timer);
 		ho = new InGameOptions(cont.getVamps(),(Pistoleros) cont.getPlayer().charact,c.timer);
 		cont.container.gameSpeedVampire.bind(ho.slidspeedVamp.valueProperty());
 		cont.container.gameSpeedPistolero.bind(ho.slidspeedPist.valueProperty());
-		game.getChildren().add(hb);
-		game.getChildren().add(ho);
+		this.getChildren().add(hb);
+		this.getChildren().add(ho);
 		this.start();
 	}
 	
