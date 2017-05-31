@@ -19,11 +19,13 @@ public class Game {
 	Music mus = new Music();
 	
     PauseMenu pause_menu = new PauseMenu(this);
+    EndGame end_menu = new EndGame(this);
 	ArrayList<Obstacle> Obstacle = new ArrayList<Obstacle>();
 	ImageView background;
 	AnimationTimer gameloop;
 
 	Pane pane;
+	protected boolean end = false;
 	
 	public Game(Pane pane){
 		this.pane = pane;
@@ -31,7 +33,7 @@ public class Game {
 	
 	public void loadGame(KeyController kc, ImageView background, Pane pane){
 		kc.addListeners();
-		pisto = new Pistoleros(0,0,100,ContainerView.WIDTH,ContainerView.HEIGHT,32,32,0,0,30,new Gun(50,"name",100),kc);
+		pisto = new Pistoleros(0,0,100,ContainerView.WIDTH,ContainerView.HEIGHT,32,32,0,0,3,new Gun(50,"name",100),kc);
 		vamp = new ArrayList<Vampire>();
 		for(int i=0;i<20;i++)
 			vamp.add(new Vampire(i*32,ContainerView.HEIGHT-32,100,ContainerView.WIDTH,ContainerView.HEIGHT,32,32,32*3,36*3,3,1,true));
@@ -47,7 +49,14 @@ public class Game {
 			@Override
 			public void handle(long now) {
 				if(now-lastNanoTime>10000000.0){						
-					if(cont.container.pause && !on_pause){
+					if(cont.check_game_over() && !cont.container.endpartie){
+						c.pist.getHurt=false;
+						end_menu.launch("YOU LOSE");
+						end = true;
+					} else if(cont.check_game_win() && !cont.container.endpartie){
+						end_menu.launch("YOU WIN");			
+						end = true;
+					} else if(cont.container.pause && !on_pause && !cont.container.endpartie){
 						pause_menu.restart();
 						on_pause = true;
 					} else {

@@ -8,7 +8,7 @@ public class Pistoleros extends Character{
 	int hurtTime;
 	SimpleIntegerProperty score;
 	public Pistoleros(double posX, double posY,
-			double speed, double maxX, double maxY, double width, double height,double offsetX,double offsetY, int life,	Gun gun,KeyController kc) {
+			double speed, double maxX, double maxY, double width, double height,double offsetX,double offsetY, int life, Gun gun,KeyController kc) {
 		super(posX, posY, speed, maxX, maxY,width, height,offsetX,offsetY, life);
 		this.gun = gun;
 		this.kc =kc;

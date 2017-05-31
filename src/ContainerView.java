@@ -52,7 +52,6 @@ public class ContainerView extends VBox{
 			bleed.isFinished = false;
 			begin = false;
 			bleed.play();
-			check_game_over();
 		}
 		for(int i=0;i<vamps.size();i++){
 			vamps.get(i).update();
@@ -83,7 +82,6 @@ public class ContainerView extends VBox{
 						vamps.get(j).remove();
 						vamps.remove(j);
 						container.vampList.remove(j);
-						check_game_win();
 					}
 				}
 		}
@@ -112,24 +110,20 @@ public class ContainerView extends VBox{
 		}
 		
 		if(!getPlayer().getCharact().isAlive()){
-			getPlayer().remove(); // A changer
+			getPlayer().remove();
 			((Pistoleros)getPlayer().charact).up_time_score(container.timer);
 		}
 	}
-	private void check_game_win() {
-		if(container.vampList.size() == 0){
-			System.err.println("GG");
-			new WinPane();
-		}
-		
+
+	
+	protected boolean check_game_win() {
+		return (container.vampList.size() == 0);		
 	}
 
-	private void check_game_over() {
-		if(container.pist.life.getValue() == 0){
-			System.err.println("Le deces");
-		}
+	protected boolean check_game_over() {
+		return (container.pist.life.getValue() == 0);
 	}
-
+	
 	public SimpleListProperty<VampireView> getVamps() {
 		return vamps;
 	}

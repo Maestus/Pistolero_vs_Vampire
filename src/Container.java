@@ -16,6 +16,7 @@ public class Container {
 	int []choix;
 	boolean pause;
 	public int pauseTime;
+	public boolean endpartie = false;
 	public Container(ArrayList<Vampire> vampList, Pistoleros pist,	ArrayList<Obstacle> obstacles) {
 		this.vampList = vampList;
 		bullets = new ArrayList<Bullet>();

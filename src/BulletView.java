@@ -13,10 +13,7 @@ public class BulletView extends SpriteView{
 		else if(bullet.moveY>0)
 			imageView.setRotate(90);
 		else if(bullet.moveY<0)
-			imageView.setRotate(270);
-		
-		
-		
+			imageView.setRotate(270);	
 
 	}
 	public void update(){
