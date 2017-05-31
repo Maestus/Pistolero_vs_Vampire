@@ -1,0 +1,9 @@
+C:\Users\Bensa\workspace\Labadens-Bensassi\bin\res\obstacles\chair.png
+463.0
+404.0
+C:\Users\Bensa\workspace\Labadens-Bensassi\bin\res\obstacles\caisse.png
+20.0
+208.0
+C:\Users\Bensa\workspace\Labadens-Bensassi\bin\res\obstacles\caisse.png
+18.0
+369.0
