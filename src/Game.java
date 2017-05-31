@@ -5,38 +5,41 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javafx.animation.AnimationTimer;
-import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
-public class Main extends Application{
-	Main m;
+public class Game {
+	Container c;
 	ContainerView cont;
 	Pistoleros pisto;
 	ArrayList<Vampire> vamp;
-	public final  static double WIDTH = 1280;
-	public final  static double HEIGHT = ContainerView.HEIGHT + InGameOptions.HEIGHT;
 	Information hb ;
 	InGameOptions ho;
 	boolean on_pause = false;
-    PauseMenu pause_menu;
+    PauseMenu pause_menu = new PauseMenu(this);
 	ArrayList<Obstacle> Obstacle = new ArrayList<Obstacle>();
 	ImageView background;
 	AnimationTimer gameloop;
-	static Pane pane;
-	MenuPrincipal menu;
-
-	public void loadGame(KeyController kc, ImageView background){
+	Pane game;
+	Pane pane;
+	
+	public Game(Pane pane){
+		this.pane = pane;
+		game = new Pane();
+		game.setPrefHeight(Main.HEIGHT);
+		game.setPrefWidth(Main.WIDTH);
+	}
+	
+	
+	public void loadGame(KeyController kc, ImageView background, Pane pane){
 		kc.addListeners();
 		pisto = new Pistoleros(0,0,100,ContainerView.WIDTH,ContainerView.HEIGHT,32,32,0,0,30,new Gun(50,"name",100),kc);
 		vamp = new ArrayList<Vampire>();
 		for(int i=0;i<20;i++)
 			vamp.add(new Vampire(i*32,ContainerView.HEIGHT-32,100,ContainerView.WIDTH,ContainerView.HEIGHT,32,32,32*3,36*3,3,1,true));
 
-		pause_menu = new PauseMenu();
 		this.background = background;
+		pane.getChildren().add(game);
 	}
 	
 	public void start(){
@@ -46,8 +49,7 @@ public class Main extends Application{
 			public void handle(long now) {
 				if(now-lastNanoTime>10000000.0){						
 					if(cont.container.pause && !on_pause){
-						pause_menu = new PauseMenu();
-						pause_menu.start(m);
+						pause_menu.restart();
 						on_pause = true;
 					} else {
 						double elapsedTime = (now - lastNanoTime) / 1000000000.0;
@@ -57,8 +59,10 @@ public class Main extends Application{
 					}
 					
 					if(!cont.container.pause && on_pause){
-						if(pause_menu.displayed())
+						if(pause_menu.displayed()){
 							pause_menu.close();
+							pause_menu.getChildren().clear();
+						}
 						on_pause = false;
 					}
 				}
@@ -101,42 +105,15 @@ public class Main extends Application{
 	}
 
 	public void initialize() {
-		Container c = new Container(vamp,pisto,Obstacle);
+		c = new Container(vamp,pisto,Obstacle);
 		cont = new ContainerView(c, background, pane);
 		hb = new Information(cont.getVamps(),(Pistoleros) cont.getPlayer().charact,c.timer);
 		ho = new InGameOptions(cont.getVamps(),(Pistoleros) cont.getPlayer().charact,c.timer);
 		cont.container.gameSpeedVampire.bind(ho.slidspeedVamp.valueProperty());
 		cont.container.gameSpeedPistolero.bind(ho.slidspeedPist.valueProperty());
-		pane.getChildren().add(hb);
-		pane.getChildren().add(ho);
+		game.getChildren().add(hb);
+		game.getChildren().add(ho);
 		this.start();
 	}
 	
-	
-	protected void boot_menu(){
-		menu = new MenuPrincipal();
-		menu.start(this);
-	}
-	
-	
-	public void start(Stage primaryStage) throws Exception {
-		pane = new Pane();
-		pane.setPrefWidth(WIDTH);
-		pane.setPrefHeight(HEIGHT);
-		
-		m = this;
-				
-		Scene scene = new Scene(pane);
-        primaryStage.setTitle("FxBattle");
-        primaryStage.setScene(scene);
-        
-		boot_menu();
-        
-        primaryStage.show();
-	}
-	
-    public static void main(String[] args) {
-        launch(args);
-    }
-
 }

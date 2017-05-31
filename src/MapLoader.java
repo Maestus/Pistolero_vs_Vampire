@@ -19,7 +19,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-public class MapLoader {
+public class MapLoader extends Pane{
 
 	Rectangle display;
 	VBox menuBox;
@@ -51,7 +51,11 @@ public class MapLoader {
 	public MapLoader(MenuPrincipal m){
 		this.menuBox = m.menuBox;
 		this.line = m.line;
-		this.pane = m.game.pane;
+		this.pane = m.pane;
+		
+		this.setPrefHeight(Main.HEIGHT);
+		this.setPrefWidth(Main.WIDTH);
+		
 		display = new Rectangle(642, 332);
 		
     	load_from_dir_maps();
@@ -91,8 +95,9 @@ public class MapLoader {
 					String find = k.split(".png")[0]+".md";
 					for(int i = 0; i < md.size(); i++){
 						if(find.equals(md.get(i))){
-							m.game.loadGame(m.kc, maps.get(k.split("_")[0]+".png"));
+							m.game.loadGame(m.kc, maps.get(k.split("_")[0]+".png"), m.pane);
 							m.game.loadObstacles(md.get(i));
+							m.game.initialize();
 							variation = true;
 							break;
 						}
@@ -113,9 +118,8 @@ public class MapLoader {
 				while(keys.hasNext()){
 					if(r == position){
 						String clef = keys.next();
-						m.game.loadGame(m.kc, maps.get(clef));
+						m.game.loadGame(m.kc, maps.get(clef), m.pane);
 						m.game.initialize();
-						System.out.println(maps.get(clef));
 						variation = true;
 						break;
 					} else {
@@ -124,8 +128,20 @@ public class MapLoader {
 					}
 				}
 			}
+			
+			m.pane.getChildren().remove(this);
+			
 		});
 	}
+	
+	
+    protected void addBackground() {
+        ImageView background = new ImageView(new Image("file:res/bg_menu.png"));
+        background.setFitWidth(pane.getPrefWidth());
+        background.setFitHeight(pane.getPrefHeight());
+
+        this.getChildren().add(background);
+    }
 	
 	public void init() {
 		ScaleTransition barre = new ScaleTransition(Duration.seconds(1), line);
@@ -145,8 +161,8 @@ public class MapLoader {
         deploy.getChildren().add(barre);
         deploy.play();
         deploy.setOnFinished(e -> {
-        	pane.getChildren().remove(menuBox);
-    		pane.getChildren().remove(line);
+    		this.pane.getChildren().remove(menuBox);
+    		this.pane.getChildren().remove(line);
     		addLoaderMap((pane.getPrefWidth()/2)-321, line.getStartY());
         });
 	}
@@ -164,11 +180,13 @@ public class MapLoader {
 		
 		previous.setTranslateX(x + 250);
 		previous.setTranslateY(y + (display.getHeight()/2) - 15);
+				
+		this.getChildren().add(display);
+		this.getChildren().add(previous);
+		this.getChildren().add(next);
+				
+		this.pane.getChildren().add(this);
 		
-		pane.getChildren().add(display);
-		pane.getChildren().add(previous);
-		pane.getChildren().add(next);
-
     	ParallelTransition deploy = new ParallelTransition();
         ScaleTransition rectangle = new ScaleTransition(Duration.seconds(1), display);
         rectangle.setToX(1);
@@ -184,9 +202,9 @@ public class MapLoader {
         
         deploy.setOnFinished( e -> {
         	renderMap();
-    		select.setTranslateX((pane.getPrefWidth()/2)-100);
-    		select.setTranslateY(pane.getPrefHeight()-50);
-    		pane.getChildren().add(select);
+    		select.setTranslateX((this.getPrefWidth()/2)-100);
+    		select.setTranslateY(this.getPrefHeight()-50);
+    		this.getChildren().add(select);
         });
 		
 	}
@@ -196,7 +214,6 @@ public class MapLoader {
 		int r = 0;
 		while(keys.hasNext()){
 			if(r == position){
-				System.err.println(position);
 				display.setFill(new ImagePattern(maps.get(keys.next()).getImage()));
 				break;
 			}else{

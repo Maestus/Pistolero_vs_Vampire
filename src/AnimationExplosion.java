@@ -12,7 +12,7 @@ public class AnimationExplosion extends Animation{
 	int count;
 	boolean isFinished;
 	public AnimationExplosion(double x,double y,Pane p){
-		explose = new ImageView(new Image("file:src/explos1.png"));
+		explose = new ImageView(new Image("file:res/explos1.png"));
 		explose.setViewport(new Rectangle2D(0, 0, 25,25));
 
 		explose.relocate(x-(25/2), y-(25/2));

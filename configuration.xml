@@ -1,1 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><configuration><Haut key="Z"/><Bas key="S"/><Gauche key="Q"/><Droite key="D"/><Attaquer key="P"/><Pause key="Esc"/></configuration>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><configuration><Haut key="Up"/><Bas key="Down"/><Gauche key="Left"/><Droite key="Right"/><Attaquer key="Q"/><Pause key="Esc"/></configuration>
