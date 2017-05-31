@@ -1,5 +1,5 @@
 
-public class Obstacle extends Sprite{
+public abstract class Obstacle extends Sprite{
 	int poids;
 	String name;
 	public Obstacle(String name, double posX, double posY,double maxX, double maxY, double width, double height,
