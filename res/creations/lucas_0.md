@@ -1,9 +1,0 @@
-res/obstacles/mouvable/chair.png
-572.0
-391.0
-res/obstacles/mouvable/chair.png
-684.0
-311.0
-res/obstacles/mouvable/chair.png
-747.0
-400.0

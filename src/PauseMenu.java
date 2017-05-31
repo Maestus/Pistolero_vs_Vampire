@@ -77,8 +77,11 @@ public class PauseMenu extends Pane{
             if(data.equals("Back To Menu")){
                 item.setOnMouseClicked(e -> {
             		running = false;
-            		game.pane.getChildren().clear();
             		this.close();
+            		game.cont.container.pist.kc.removeListeners();
+            		game.hb.getChildren().clear();
+            		game.ho.getChildren().clear();
+            		game.pane.getChildren().clear();
             		if(game.mus.playing)
             			game.mus.stop();
                 	new MenuPrincipal().start(game.pane);                	
@@ -86,7 +89,6 @@ public class PauseMenu extends Pane{
             } else if(data.equals("Resume")){
             	item.setOnMouseClicked(e -> {
             		running = false;
-            		game.pane.getChildren().removeAll(this);
             		this.close();
             		game.cont.container.pause = false;
             	});
@@ -137,4 +139,5 @@ public class PauseMenu extends Pane{
 	public void setContent(Game game) {
 		this.game = game;
 	}
+
 }

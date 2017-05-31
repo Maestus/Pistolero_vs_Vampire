@@ -42,7 +42,7 @@ public class EndGame extends Pane{
     	this.setPrefHeight(Main.HEIGHT);
     	this.setPrefWidth(Main.WIDTH);
     	
-message = new Pane();
+    	message = new Pane();
 		
         Text text;
         String name = s;
@@ -80,8 +80,6 @@ message = new Pane();
         
         addLine(lineX, lineY);
         addMenu(lineX + 5, lineY + 5);
-
-        game.pane.getChildren().add(this);
     }
     
 
@@ -130,10 +128,10 @@ message = new Pane();
 	            MenuPrincipalItem item = new MenuPrincipalItem(data);
 	            if(data.equals("Back To Menu")){
 	                item.setOnMouseClicked(e -> {
-	            		game.pane.getChildren().clear();
 	            		message.getChildren().clear();
 	            		score.getChildren().clear();
-	            		
+	            		game.cont.container.pist.kc.removeListeners();
+	            		game.pane.getChildren().clear();
 	            		if(game.mus.playing)
 	            			game.mus.stop();
 	                	new MenuPrincipal().start(game.pane);                	

@@ -23,15 +23,16 @@ public class Game {
 	ArrayList<Obstacle> Obstacle = new ArrayList<Obstacle>();
 	ImageView background;
 	AnimationTimer gameloop;
-
 	Pane pane;
-	protected boolean end = false;
 	
 	public Game(Pane pane){
+		System.err.println(pane);
 		this.pane = pane;
+		System.err.println(this.pane);
 	}
 	
 	public void loadGame(KeyController kc, ImageView background, Pane pane){
+		System.err.println(pane);
 		kc.addListeners();
 		pisto = new Pistoleros(0,0,100,ContainerView.WIDTH,ContainerView.HEIGHT,32,32,0,0,3,new Gun(50,"name",100),kc);
 		vamp = new ArrayList<Vampire>();
@@ -40,7 +41,6 @@ public class Game {
 
 		this.background = background;
 		mus.play();
-
 	}
 	
 	public void start(){
@@ -52,10 +52,8 @@ public class Game {
 					if(cont.check_game_over() && !cont.container.endpartie){
 						c.pist.getHurt=false;
 						end_menu.launch("YOU LOSE");
-						end = true;
 					} else if(cont.check_game_win() && !cont.container.endpartie){
 						end_menu.launch("YOU WIN");			
-						end = true;
 					} else if(cont.container.pause && !on_pause && !cont.container.endpartie){
 						pause_menu.restart();
 						on_pause = true;
@@ -67,11 +65,9 @@ public class Game {
 					}
 					
 					if(!cont.container.pause && on_pause){
-						if(pause_menu.displayed()){
-							pause_menu.close();
-							pause_menu.getChildren().clear();
+						if( pause_menu.displayed()){
+							pause_menu.close();						
 						}
-						
 						on_pause = false;
 					}
 				}
