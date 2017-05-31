@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><configuration><Haut key="Up"/><Bas key="Down"/><Gauche key="Left"/><Droite key="Right"/><Attaquer key="P"/><Pause key="Esc"/></configuration>
+=======
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><configuration><Haut key="Up"/><Bas key="Down"/><Gauche key="Left"/><Droite key="Right"/><Attaquer key="Q"/><Pause key="Esc"/></configuration>
+>>>>>>> ec72c241e22b7eaaf9beacdf0d7dfae352b07897

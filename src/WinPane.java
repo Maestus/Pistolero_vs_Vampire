@@ -23,7 +23,7 @@ public class WinPane extends Pane{
 
         this.getChildren().add(background);
         this.getChildren().add(win);
-        Main.pane.getChildren().add(this);
+        //Main.pane.getChildren().add(this);
         
 	}
 	
