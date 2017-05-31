@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
@@ -16,34 +15,33 @@ import javafx.util.Duration;
 public class PauseMenu extends MenuPrincipal{
 
 	protected ImageView background;
-    protected Pane game;
+    protected Main game;
+    protected Pane pause;
     protected VBox menuBox = new VBox();
     protected Line line;
-    protected static SettingMenu setting;
     double lineX;
     double lineY;
-    boolean menuBox_already_add_in_plat = false;
-    KeyController kc;
-    
+    boolean menuBox_already_add_in_plat = false;    
     protected ArrayList<String> menuData = new ArrayList<>();
+	private boolean running = false;
  
     
     protected void addBackground() {
         ImageView background = new ImageView(new Image("file:src/bg_menu.png"));
-        background.setFitWidth(game.getPrefWidth());
-        background.setFitHeight(game.getPrefHeight());
-
-        game.getChildren().add(background);
+        background.setFitWidth(pause.getPrefWidth());
+        background.setFitHeight(pause.getPrefHeight());
+        
+        pause.getChildren().add(background);
     }
 
 
     protected void addLine(double x, double y) {
-        line = new Line(x, y, x, y + 400);
+        line = new Line(x, y, x, y + 350);
         line.setStrokeWidth(1);
         line.setStroke(Color.WHITE);
         line.setScaleY(0);
-
-        game.getChildren().add(line);
+        
+        pause.getChildren().add(line);
     }
 
     protected void startAnimation() {
@@ -72,19 +70,17 @@ public class PauseMenu extends MenuPrincipal{
 
         menuData.forEach(data -> {
             MenuPrincipalItem item = new MenuPrincipalItem(data);
-            if(data.equals("Game Options")){
-                item.setOnMouseClicked(e -> setting.init());
-            } else if(data.equals("Back To Menu")){
+            if(data.equals("Back To Menu")){
                 item.setOnMouseClicked(e -> {
-                	game.getChildren().clear();
-                	new MenuPrincipal();
-                	
+            		running = false;
+            		game.pane.getChildren().clear();
+                	game.boot_menu();                	
                 });
             } else if(data.equals("Resume")){
             	item.setOnMouseClicked(e -> {
-            		game.getChildren().remove(background);
-            		game.getChildren().remove(line);
-            		game.getChildren().remove(menuBox);
+            		running = false;
+            		game.pane.getChildren().removeAll(pause);
+            		game.cont.container.pause = false;
             	});
             }
 
@@ -94,22 +90,24 @@ public class PauseMenu extends MenuPrincipal{
             
             menuBox.getChildren().addAll(item);
         });
-		if(!menuBox_already_add_in_plat){
-        	game.getChildren().add(menuBox);
-        	menuBox_already_add_in_plat = true;
-		}
+        pause.getChildren().add(menuBox);
         startAnimation();
     }
 
-    public void start(Pane p) {
+    public void start(Main m) {
+    	    	
+    	game = m;
+    	    	
+    	running = true;
     	
-    	game = p;
+    	pause = new Pane();
+    	pause.setPrefHeight(game.pane.getPrefHeight());
+    	pause.setPrefWidth(game.pane.getPrefWidth());
     	
-      	lineX = game.getPrefWidth() / 2 - 200;
-        lineY = game.getPrefHeight() / 4 + 70;
+      	lineX = pause.getPrefWidth() / 2 - 200;
+        lineY = pause.getPrefHeight() / 4 + 70;
     	
     	menuData.add("Resume");
-        menuData.add("Game Options");
         menuData.add("Back To Menu");
         
     	addBackground();
@@ -117,9 +115,16 @@ public class PauseMenu extends MenuPrincipal{
         addLine(lineX, lineY);
         addMenu(lineX + 5, lineY + 5);
 
-        setting = new SettingMenu(this);
-        
-        kc = new KeyController(game.getScene(), setting.configuration);
+        game.pane.getChildren().add(pause);
     }
+
+
+	public boolean displayed() {
+		return running;
+	}
 	
+	public void close(){
+		running = false;
+		game.pane.getChildren().removeAll(pause);
+	}
 }

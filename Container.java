@@ -217,6 +217,7 @@ public class Container {
 
 
 	}
+
 	public void obstacleCollides(double speed){
 		for(int i =0;i<obstacles.size();i++){
 			if(pist.collides(obstacles.get(i))|| obstacles.get(i).collides(pist)){
