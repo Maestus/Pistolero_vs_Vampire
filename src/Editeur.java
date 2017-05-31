@@ -245,9 +245,7 @@ public class Editeur extends Application {
 
         paint = new BorderPane();
 		
-		//paint.setBorder(new Border(new BorderStroke(Color.BLACK, 
-          //      BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-       
+		
 		
         
 		creations.setOnMouseClicked( e -> {	      
