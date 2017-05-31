@@ -23,16 +23,11 @@ public class Game {
 	ImageView background;
 	AnimationTimer gameloop;
 
-	Pane game;
 	Pane pane;
 	
 	public Game(Pane pane){
 		this.pane = pane;
-		game = new Pane();
-		game.setPrefHeight(Main.HEIGHT);
-		game.setPrefWidth(Main.WIDTH);
 	}
-	
 	
 	public void loadGame(KeyController kc, ImageView background, Pane pane){
 		kc.addListeners();
@@ -43,6 +38,7 @@ public class Game {
 
 		this.background = background;
 		mus.play();
+
 	}
 	
 	public void start(){
