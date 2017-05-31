@@ -26,19 +26,15 @@ public class Game {
 	Pane pane;
 	
 	public Game(Pane pane){
-		System.err.println(pane);
 		this.pane = pane;
-		System.err.println(this.pane);
 	}
 	
 	public void loadGame(KeyController kc, ImageView background, Pane pane){
-		System.err.println(pane);
 		kc.addListeners();
 		pisto = new Pistoleros(0,0,100,ContainerView.WIDTH,ContainerView.HEIGHT,32,32,0,0,3,new Gun(50,"name",100),kc);
 		vamp = new ArrayList<Vampire>();
 		for(int i=0;i<20;i++)
 			vamp.add(new Vampire(i*32,ContainerView.HEIGHT-32,100,ContainerView.WIDTH,ContainerView.HEIGHT,32,32,32*3,36*3,3,1,true));
-
 		this.background = background;
 		mus.play();
 	}
@@ -113,10 +109,10 @@ public class Game {
 				e.printStackTrace();
 			}
 		}
-		this.initialize();
 	}
 
 	public void initialize() {
+		//pane.getChildren().clear();
 		c = new Container(vamp,pisto,Obstacle);
 		cont = new ContainerView(c, background, pane);
 		hb = new Information(cont.getVamps(),(Pistoleros) cont.getPlayer().charact,c.timer);

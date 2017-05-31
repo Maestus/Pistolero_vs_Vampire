@@ -105,7 +105,6 @@ public class MapLoader extends Pane{
 					r++;
 				} else {
 					r++;
-					System.err.println(r);
 					keys.next();
 				}
 				
@@ -120,8 +119,6 @@ public class MapLoader extends Pane{
 						String clef = keys.next();
 						m.game.loadGame(m.kc, maps.get(clef), m.pane);
 						m.game.initialize();
-						variation = true;
-
 						break;
 					} else {
 						r++;
