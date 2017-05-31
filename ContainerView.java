@@ -51,6 +51,7 @@ public class ContainerView extends VBox{
 			bleed.isFinished = false;
 			begin = false;
 			bleed.play();
+			check_game_over();
 		}
 		for(int i=0;i<vamps.size();i++){
 			vamps.get(i).update();
@@ -69,8 +70,9 @@ public class ContainerView extends VBox{
 	
 	public void removingDeath(){
 		for(int i=0;i<animation.size();i++){
-			if(animation.get(i).isFinished)
+			if(animation.get(i).isFinished){
 				animation.remove(i);
+			}
 		} for(int i=0;i<death.size();i++){
 			if(death.get(i).isFinished)
 				for(int j = 0; j <  vamps.size(); j++){
@@ -78,6 +80,7 @@ public class ContainerView extends VBox{
 						vamps.get(j).remove();
 						vamps.remove(j);
 						container.vampList.remove(j);
+						check_game_win();
 					}
 				}
 		}
@@ -110,6 +113,20 @@ public class ContainerView extends VBox{
 			((Pistoleros)getPlayer().charact).up_time_score(container.timer);
 		}
 	}
+	private void check_game_win() {
+		if(container.vampList.size() == 0){
+			System.err.println("GG");
+			new WinPane();
+		}
+		
+	}
+
+	private void check_game_over() {
+		if(container.pist.life.getValue() == 0){
+			System.err.println("Le deces");
+		}
+	}
+
 	public SimpleListProperty<VampireView> getVamps() {
 		return vamps;
 	}

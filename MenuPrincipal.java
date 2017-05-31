@@ -22,7 +22,6 @@ public class MenuPrincipal {
 
     protected ImageView background;
     protected Pane title;
-    protected Main game;
     protected VBox menuBox = new VBox();
     protected Line line;
     protected static SettingMenu setting;
@@ -33,6 +32,7 @@ public class MenuPrincipal {
     KeyController kc;
     
     protected ArrayList<String> menuData = new ArrayList<>();
+	protected Main game;
  
     
     protected void addBackground() {
@@ -110,18 +110,6 @@ public class MenuPrincipal {
                 item.setOnMouseClicked(e -> Platform.exit());
             } else if(data.equals("Play")){
             	item.setOnMouseClicked(e ->  loader.init());
-            		//game.pane.getChildren().remove(menuBox);
-            		//game.pane.getChildren().remove(title);
-            		//game.pane.getChildren().remove(line);
-            		//game.pane.getChildren().remove(background);
-            	/*	try {
-            			//game.loadKey(kc);
-            			//item.setOnMouseClicked(e -> setting.init());
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-            	});*/
             }
 
             item.setTranslateX(200);
@@ -137,8 +125,9 @@ public class MenuPrincipal {
         startAnimation();
     }
 
-    public void start(Main m) {
-    	game = m;
+    public void start(Main game) {
+    	
+    	this.game = game;
     	
       	lineX = game.pane.getPrefWidth() / 2 - 200;
         lineY = game.pane.getPrefHeight() / 4 + 70;

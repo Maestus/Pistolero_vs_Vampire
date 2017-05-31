@@ -92,7 +92,7 @@ public class MapLoader {
 					for(int i = 0; i < md.size(); i++){
 						if(find.equals(md.get(i))){
 							m.game.loadGame(m.kc, maps.get(k.split("_")[0]+".png"));
-							m.game.game.loadObstacles(md.get(i));
+							m.game.loadObstacles(md.get(i));
 							variation = true;
 							break;
 						}
@@ -114,7 +114,7 @@ public class MapLoader {
 					if(r == position){
 						String clef = keys.next();
 						m.game.loadGame(m.kc, maps.get(clef));
-						m.game.game.init();
+						m.game.initialize();
 						System.out.println(maps.get(clef));
 						variation = true;
 						break;

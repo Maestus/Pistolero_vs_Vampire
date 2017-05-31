@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 
 public class InGameOptions extends Pane{
 	public final static double WIDTH = 1280;
-	public final static double HEIGHT = 40;
+	public final static double HEIGHT = 50;
 	Slider slidspeedVamp ;
 	Slider slidspeedPist;
 	public InGameOptions(SimpleListProperty<VampireView> vamps,Pistoleros pist,SimpleIntegerProperty timer){
