@@ -16,7 +16,7 @@ public class Game {
 	Information hb ;
 	InGameOptions ho;
 	boolean on_pause = false;
-	Music mus = new Music();
+	Music mus = new Music(0);
 	
     PauseMenu pause_menu = new PauseMenu(this);
 	ArrayList<Obstacle> Obstacle = new ArrayList<Obstacle>();
@@ -92,7 +92,7 @@ public class Game {
 	    					System.err.println("loading : "+ obstacle);
 	        		    	double posx = Double.parseDouble(out.readLine());
 	        		    	double posy = Double.parseDouble(out.readLine());
-	        				Obstacle.add(new Obstacle(obstacle, posx,posy,ContainerView.WIDTH,ContainerView.HEIGHT,35,35,0,0,10));
+	        				Obstacle.add(new Obstacle(obstacle, posx,posy,ContainerView.WIDTH,ContainerView.HEIGHT,35,35,0,0,1));
 	    	            }              		    	
 	            		   
 	            	}

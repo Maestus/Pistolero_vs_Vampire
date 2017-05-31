@@ -112,13 +112,12 @@ public class ContainerView extends VBox{
 		}
 		
 		if(!getPlayer().getCharact().isAlive()){
-			getPlayer().remove(); // A changer
+			getPlayer().remove(); 
 			((Pistoleros)getPlayer().charact).up_time_score(container.timer);
 		}
 	}
 	private void check_game_win() {
 		if(container.vampList.size() == 0){
-			System.err.println("GG");
 			new WinPane();
 		}
 		

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -63,7 +64,7 @@ public class Editeur extends Application {
 	private String obstacle_name;
 	private String creation_to_edit;
 	BorderPane paint;
-	
+	 VBox menu ;
 	FilenameFilter extension_png = new FilenameFilter() {
 		
 		@Override
@@ -261,11 +262,17 @@ public class Editeur extends Application {
 				root.setCenter(paint);
 	    });
 		
-        
+        HBox boutton = new HBox(5);
+        boutton.setAlignment(Pos.BOTTOM_CENTER);
 		Button valider = new Button("Valider");
-		BorderPane.setAlignment(valider, Pos.BOTTOM_CENTER);
+        Button retour = new Button("retour");
+        boutton.getChildren().addAll(valider,retour);
 		
-		
+		 retour.setOnAction(act->{
+	        	root.getChildren().clear();
+	        	root.getChildren().add(menu);
+	        });
+		 
 		valider.setOnAction( e -> {
 			FileWriter fstream;
 			BufferedWriter out = null;
@@ -300,7 +307,7 @@ public class Editeur extends Application {
 		});
 		
 		
-		root.setBottom(valider);
+		root.setBottom(boutton);
         root.setTop(sp);
         root.setLeft(stack);
 	}
@@ -384,12 +391,13 @@ public class Editeur extends Application {
         
         HBox complet = new HBox();
         
+        Button retour = new Button("retour");
         TextField name = new TextField("Give a name");
         
         Button create_map = new Button("Create !");
 		create_map.setDisable(true);
         
-        complet.getChildren().addAll(name, create_map);
+        complet.getChildren().addAll(name, create_map,retour);
         complet.setAlignment(Pos.BOTTOM_CENTER);
         
         create_map.setOnAction(e -> {
@@ -422,6 +430,10 @@ public class Editeur extends Application {
         	}
         });
         
+        retour.setOnAction(act->{
+        	root.getChildren().clear();
+        	root.getChildren().add(menu);
+        });
         
         plateau_view = new GridPane(); 
         plateau_view.setMaxHeight(32*HEIGHT);
@@ -456,18 +468,19 @@ public class Editeur extends Application {
         stage.setTitle("Editeur de niveau");
 
         root = new BorderPane();
-        Scene scene = new Scene(root, 1440, 780);
+        Scene scene = new Scene(root, 500, 500);
         stage.setMaximized(true);
         
-        VBox menu = new VBox();
+        menu = new VBox();
         
         Button image_editor = new Button("Construire votre map!");
-        Button obstacle_editor = new Button("Creer des variantes");
-        
-        menu.getChildren().addAll(image_editor, obstacle_editor);
+        Button obstacle_editor = new Button("  Creer des variantes  ");
+        Button quitter =new Button("            quitter             ");
+        menu.getChildren().addAll(image_editor, obstacle_editor,quitter);
         
         menu.setAlignment(Pos.CENTER);    
         
+        quitter.setOnAction(quit->Platform.exit());
         image_editor.setOnAction( e -> {
         	root.getChildren().remove(menu);
         	draw_map();

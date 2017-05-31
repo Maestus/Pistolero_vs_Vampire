@@ -95,11 +95,9 @@ public abstract class Sprite {
 
 		if((s.posX<=posX && posX <= s.posX+s.width && s.posY <= posY && posY <= s.posY+s.height) || (s.posX <= posX +width && posX+width <= s.posX+ s.width && s.posY <= posY && posY <= s.posY+s.height ) 
 				|| (s.posX<=posX && posX <= s.posX+s.width && s.posY <= posY+height && posY+height <= s.posY+s.height) && (s.posX <= posX +width && posX+width <= s.posX+ s.width && s.posY <= posY+height && posY+height <= s.posY+s.height) ) {
-			System.out.println("premier cas");
 			return true;
 		}
-		/*else
-			System.out.println("deuxieme cas")*/
+		
 		else return false;
 			
 	}

@@ -31,7 +31,7 @@ public class MenuPrincipal extends Pane{
     protected ArrayList<String> menuData = new ArrayList<>();
 	protected Pane pane;
 	protected Game game; 
- 
+	Music music_menu = new Music(1);
 	protected void boot_menu(){
 		pane.getChildren().clear();
 		addBackground();
@@ -106,6 +106,7 @@ public class MenuPrincipal extends Pane{
     }
 
     protected void addMenu(double x, double y) {
+    	
         menuBox.setTranslateX(x);
         menuBox.setTranslateY(y);
 
@@ -117,7 +118,7 @@ public class MenuPrincipal extends Pane{
                 item.setOnMouseClicked(e -> Platform.exit());
             } else if(data.equals("Play")){
             	item.setOnMouseClicked(e -> {	
-            		
+            		music_menu.stop();
             		loader.init();
             	
             	});
@@ -164,7 +165,7 @@ public class MenuPrincipal extends Pane{
         	System.out.println("nulll");
         loader = new MapLoader(this);
         game = new Game(pane);
-        
+        music_menu.play();
         this.pane.getChildren().add(this);
         
 	}
