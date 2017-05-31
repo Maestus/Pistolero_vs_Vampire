@@ -218,7 +218,6 @@ public class Editeur extends Application {
 	             paint.setOnDragEntered( event -> {               
 	                 if (event.getGestureSource() != source
 	                         && event.getDragboard().hasImage()) {
-	                	 //System.out.println("yabon");
 	                 }               
 	                 event.consume();
 	             });
@@ -226,9 +225,7 @@ public class Editeur extends Application {
 	            
 	             paint.setOnDragExited(
 	                     event -> {
-	                         //target.setFill(targetColor);
 	                         event.consume();
-	                         //System.out.println("exited");
 	             });
 	                 
 	             paint.setOnDragDropped((DragEvent event) ->{
