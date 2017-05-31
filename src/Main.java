@@ -27,7 +27,7 @@ public class Main extends Application{
 	AnimationTimer gameloop;
 	static Pane pane;
 	MenuPrincipal menu;
-
+	Music mus = new Music();
 	public void loadGame(KeyController kc, ImageView background){
 		kc.addListeners();
 		pisto = new Pistoleros(0,0,100,ContainerView.WIDTH,ContainerView.HEIGHT,32,32,0,0,30,new Gun(50,"name",100),kc);
@@ -37,6 +37,7 @@ public class Main extends Application{
 
 		pause_menu = new PauseMenu();
 		this.background = background;
+		mus.play();
 	}
 	
 	public void start(){
@@ -104,7 +105,7 @@ public class Main extends Application{
 		Container c = new Container(vamp,pisto,Obstacle);
 		cont = new ContainerView(c, background, pane);
 		hb = new Information(cont.getVamps(),(Pistoleros) cont.getPlayer().charact,c.timer);
-		ho = new InGameOptions(cont.getVamps(),(Pistoleros) cont.getPlayer().charact,c.timer);
+		ho = new InGameOptions(cont.getVamps(),(Pistoleros) cont.getPlayer().charact,c.timer,mus);
 		cont.container.gameSpeedVampire.bind(ho.slidspeedVamp.valueProperty());
 		cont.container.gameSpeedPistolero.bind(ho.slidspeedPist.valueProperty());
 		pane.getChildren().add(hb);
