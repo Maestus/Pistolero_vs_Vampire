@@ -158,6 +158,10 @@ public class MenuPrincipal extends Pane{
 
         setting = new SettingMenu(this);
         kc = new KeyController(this.pane.getScene(), setting.configuration);	
+        if(kc != null)
+        	System.out.println("pas nul");
+        else
+        	System.out.println("nulll");
         loader = new MapLoader(this);
         game = new Game(pane);
         

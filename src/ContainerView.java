@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 
 public class ContainerView extends VBox{
 	public static double WIDTH = 1280;
@@ -58,6 +59,8 @@ public class ContainerView extends VBox{
 		}
 		for(int i=0;i<container.bullets.size();i++){
 			if(i>=bullets.size()){
+				AudioClip sonTire = new AudioClip("file:res/tire.mp3");
+				sonTire.play();
 				bullets.add(new BulletView(container.bullets.get(i),p));
 				bullets.get(i).add();
 			}

@@ -17,6 +17,7 @@ public class Game {
 	InGameOptions ho;
 	boolean on_pause = false;
 	Music mus = new Music();
+	
     PauseMenu pause_menu = new PauseMenu(this);
 	ArrayList<Obstacle> Obstacle = new ArrayList<Obstacle>();
 	ImageView background;
@@ -42,7 +43,6 @@ public class Game {
 
 		this.background = background;
 		mus.play();
-		pane.getChildren().add(game);
 	}
 	
 	public void start(){
@@ -66,6 +66,7 @@ public class Game {
 							pause_menu.close();
 							pause_menu.getChildren().clear();
 						}
+						
 						on_pause = false;
 					}
 				}
@@ -114,8 +115,8 @@ public class Game {
 		ho = new InGameOptions(cont.getVamps(),(Pistoleros) cont.getPlayer().charact,c.timer,mus);
 		cont.container.gameSpeedVampire.bind(ho.slidspeedVamp.valueProperty());
 		cont.container.gameSpeedPistolero.bind(ho.slidspeedPist.valueProperty());
-		game.getChildren().add(hb);
-		game.getChildren().add(ho);
+		pane.getChildren().add(hb);
+		pane.getChildren().add(ho);
 		this.start();
 	}
 	

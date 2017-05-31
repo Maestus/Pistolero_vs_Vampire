@@ -39,7 +39,7 @@ public class Container {
 			timerI =timerI+speed;
 			timer.setValue(timerI);
 			pistMove(speed);
-			bulletMove(speed*6);
+			bulletMove(speed*2);
 			updateTime();
 			vampMove(speed);
 			checkCollides(speed);
@@ -226,7 +226,7 @@ public class Container {
 						double oldY = obstacles.get(i).posY;
 						obstacles.get(i).moveY=-(pist.speed-obstacles.get(i).poids);
 						obstacles.get(i).move(speed);
-						if(collidesVamps(obstacles.get(i)))
+						if(collidesVamps(obstacles.get(i)) || collidesObstacles(obstacles.get(i)))
 							obstacles.get(i).posY=oldY;
 						obstacles.get(i).moveY=0;
 						
@@ -239,7 +239,7 @@ public class Container {
 
 						obstacles.get(i).moveX=(pist.speed-obstacles.get(i).poids);
 						obstacles.get(i).move(speed);
-						if(collidesVamps(obstacles.get(i)))
+						if(collidesVamps(obstacles.get(i)) || collidesObstacles(obstacles.get(i)))
 							obstacles.get(i).posX=oldX;
 						obstacles.get(i).moveX=0;
 					}
@@ -250,7 +250,7 @@ public class Container {
 						double oldY = obstacles.get(i).posY;
 						obstacles.get(i).moveY=(pist.speed-obstacles.get(i).poids);
 						obstacles.get(i).move(speed);
-						if(collidesVamps(obstacles.get(i)))
+						if(collidesVamps(obstacles.get(i)) || collidesObstacles(obstacles.get(i)))
 							obstacles.get(i).posY=oldY;
 						obstacles.get(i).moveY=0;
 						
@@ -264,13 +264,14 @@ public class Container {
 
 						obstacles.get(i).moveX=-(pist.speed-obstacles.get(i).poids);
 						obstacles.get(i).move(speed);
-						if(collidesVamps(obstacles.get(i)))
+						if(collidesVamps(obstacles.get(i)) || collidesObstacles(obstacles.get(i)))
 							obstacles.get(i).posX=oldX;
 						obstacles.get(i).moveX=0;
 					}
 
 					pist.posX =obstacles.get(i).posX+obstacles.get(i).width+2;
 				}
+				
 
 
 			}
@@ -281,6 +282,14 @@ public class Container {
 		}
 	}
 	
+	public boolean collidesObstacles(Sprite s){
+		for(int i=0;i<obstacles.size();i++){
+			if(s.collides(obstacles.get(i)) || obstacles.get(i).collides(s)){
+				return true;
+			}
+		}
+		return false;
+	}
 	public boolean collidesVamps(Sprite s){
 		for(int i=0;i<vampList.size();i++){
 			if(s.collides(vampList.get(i))||vampList.get(i).collides(s)){

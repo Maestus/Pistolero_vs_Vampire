@@ -79,6 +79,8 @@ public class PauseMenu extends Pane{
             		running = false;
             		game.pane.getChildren().clear();
             		this.close();
+            		if(game.mus.playing)
+            			game.mus.stop();
                 	new MenuPrincipal().start(game.pane);                	
                 });
             } else if(data.equals("Resume")){
@@ -96,6 +98,8 @@ public class PauseMenu extends Pane{
             
             menuBox.getChildren().addAll(item);
         });
+   
+        
         this.getChildren().add(menuBox);
         startAnimation();
     }
@@ -127,6 +131,7 @@ public class PauseMenu extends Pane{
 		running = false;
 		this.getChildren().clear();
 		game.pane.getChildren().remove(this);
+	
 	}
 
 	public void setContent(Game game) {

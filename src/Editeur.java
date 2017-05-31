@@ -465,7 +465,7 @@ public class Editeur extends Application {
         VBox menu = new VBox();
         
         Button image_editor = new Button("Construire votre map!");
-        Button obstacle_editor = new Button("Cr�er des variantes");
+        Button obstacle_editor = new Button("Creer des variantes");
         
         menu.getChildren().addAll(image_editor, obstacle_editor);
         
