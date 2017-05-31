@@ -16,7 +16,7 @@ public class Game {
 	Information hb ;
 	InGameOptions ho;
 	boolean on_pause = false;
-	Music mus = new Music();
+	Music mus = new Music(0);
 	
     PauseMenu pause_menu = new PauseMenu(this);
     EndGame end_menu = new EndGame(this);
@@ -102,6 +102,7 @@ public class Game {
 	    					System.err.println("loading : "+ obstacle);
 	        		    	double posx = Double.parseDouble(out.readLine());
 	        		    	double posy = Double.parseDouble(out.readLine());
+
 	        		    	double width = Double.parseDouble(out.readLine());
 	        		    	double height = Double.parseDouble(out.readLine());
 	        		    	if(type.equals("mouvable"))

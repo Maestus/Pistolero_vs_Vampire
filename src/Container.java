@@ -128,7 +128,6 @@ public class Container {
 	}
 
 	public void vampMove(double speed){
-		//System.out.println(vampList.size());
 		for(int i=0;i<vampList.size();i++){
 			if(vampList.get(i).getChange()>=(vampList.get(i).getTimeChange()/gameSpeedVampire.getValue())){
 				vampList.get(i).setChange(0);
@@ -179,8 +178,6 @@ public class Container {
 			for(int j=i+1;j<vampList.size();j++){
 				if(vampList.get(i).collides(vampList.get(j)) || vampList.get(j).collides(vampList.get(i))){
 					vampList.get(i).life.setValue(0);
-					System.out.println("on s'est frappé");
-					System.out.println(vampList.size());
 					break;
 				}
 			}
@@ -193,14 +190,11 @@ public class Container {
 				}
 			}
 			if((vampList.get(i).collides(pist) || pist.collides(vampList.get(i))) && pist.isAlive() && vampList.get(i).isAlive()){
-				System.out.println("collision");
-				if(pist.getHurt(vampList.get(i).getDammage())){
-					System.out.println("getHurt");
-				}
+				pist.getHurt(vampList.get(i).getDammage());
+				
 			}
 			for(int j =0;j<obstacles.size();j++){
 				if(vampList.get(i).collides(obstacles.get(j))|| obstacles.get(j).collides(vampList.get(i))){
-					System.out.println("collission arbre");
 
 					if(vampList.get(i).sens==0)
 						vampList.get(i).posY+=vampList.get(i).speed*speed;
@@ -285,6 +279,7 @@ public class Container {
 	
 	public boolean collidesObstacles(Sprite s){
 		for(int i=0;i<obstacles.size();i++){
+
 			if(obstacles.get(i)!=s)
 				if(s.collides(obstacles.get(i)) || obstacles.get(i).collides(s)){
 					return true;
@@ -297,7 +292,6 @@ public class Container {
 			if(s.collides(vampList.get(i))||vampList.get(i).collides(s)){
 				if(vampList.get(i).getChange()!=0)
 				vampList.get(i).setChange(vampList.get(i).getTimeChange()/gameSpeedVampire.getValue());
-				System.out.println("normal");
 				return true;
 			}
 		}

@@ -114,7 +114,6 @@ public class ContainerView extends VBox{
 			((Pistoleros)getPlayer().charact).up_time_score(container.timer);
 		}
 	}
-
 	
 	protected boolean check_game_win() {
 		return (container.vampList.size() == 0);		
