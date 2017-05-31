@@ -8,7 +8,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-public class Game extends Pane{
+public class Game {
 	Container c;
 	ContainerView cont;
 	Pistoleros pisto;
@@ -34,7 +34,6 @@ public class Game extends Pane{
 			vamp.add(new Vampire(i*32,ContainerView.HEIGHT-32,100,ContainerView.WIDTH,ContainerView.HEIGHT,32,32,32*3,36*3,3,1,true));
 
 		this.background = background;
-		pane.getChildren().add(this);
 	}
 	
 	public void start(){
@@ -101,13 +100,13 @@ public class Game extends Pane{
 
 	public void initialize() {
 		c = new Container(vamp,pisto,Obstacle);
-		cont = new ContainerView(c, background, this);
+		cont = new ContainerView(c, background, pane);
 		hb = new Information(cont.getVamps(),(Pistoleros) cont.getPlayer().charact,c.timer);
 		ho = new InGameOptions(cont.getVamps(),(Pistoleros) cont.getPlayer().charact,c.timer);
 		cont.container.gameSpeedVampire.bind(ho.slidspeedVamp.valueProperty());
 		cont.container.gameSpeedPistolero.bind(ho.slidspeedPist.valueProperty());
-		this.getChildren().add(hb);
-		this.getChildren().add(ho);
+		pane.getChildren().add(hb);
+		pane.getChildren().add(ho);
 		this.start();
 	}
 	
