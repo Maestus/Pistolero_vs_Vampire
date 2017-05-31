@@ -50,7 +50,7 @@ public class Editeur extends Application {
 	int HEIGHT = 24; // longueur du plateau
 	int position = 0; // position dans le gridPane des images chargees
 	int posx = 0, posy = 0; // position dans le plateau de jeu
-	GridPane images; // Toutes les assets dans le fichier floor 
+	GridPane images, images_fix, images_mouvable; // Toutes les assets dans le fichier floor 
 	GridPane plateau_view; // Le plateau en creation
 	ListView<String> creations = new ListView<String>();
 	public static final ObservableList<String> names = 
@@ -59,12 +59,15 @@ public class Editeur extends Application {
 	ArrayList<ObstacleModel> obstacles = new ArrayList<>();
 	File dir_creations = new File("res/creations");
 	File dir_floors = new File("res/floors/");
-	File dir_obstacles = new File("res/obstacles/mouvable");
+	File dir_obstacles_mouvable = new File("res/obstacles/mouvable");
+	File dir_obstacles_fix = new File("res/obstacles/fix");
 	File obstacles_file_storage = new File("res/creations");
 	private String obstacle_name;
 	private String creation_to_edit;
 	BorderPane paint;
 	 VBox menu ;
+	private boolean obstacle_type;
+
 	FilenameFilter extension_png = new FilenameFilter() {
 		
 		@Override
@@ -74,9 +77,6 @@ public class Editeur extends Application {
 	};
 
     private void init_from_res_dir_assets() {
-		System.err.println("laslk");
-
-		System.err.println(dir_floors.getPath());
 		
     	if (dir_floors.isDirectory()) {
     		System.err.println("la");
@@ -113,21 +113,23 @@ public class Editeur extends Application {
     
     
     private void init_from_obstacle_dir_assets() {
-    	if (dir_obstacles.isDirectory()) {
+    	if (dir_obstacles_mouvable.isDirectory()) {
 
-            for (final File f : dir_obstacles.listFiles(extension_png)) {
+            for (final File f : dir_obstacles_mouvable.listFiles(extension_png)) {
                 Image image = new Image("file:res/obstacles/mouvable/"+f.getName());
 				
 				ImageView source = new ImageView();
 				source.setImage(image);
-				images.add(source, position++, 1);
+				images_mouvable.add(source, position++, 1);
 				GridPane.setMargin(source, new Insets(0, 10, 0, 0));
 			        
 				source.setOnDragDetected( event -> {
+					draw = source.getImage();
 		            Dragboard db = source.startDragAndDrop(TransferMode.ANY);
 		            ClipboardContent content = new ClipboardContent();
 		            content.putImage(source.getImage());
 		            content.putString(f.getPath());
+		            obstacle_type = true;
 		            db.setContent(content);
 		            event.consume();
 		        });
@@ -135,7 +137,7 @@ public class Editeur extends Application {
 				source.setOnDragDone((DragEvent event) -> {             
 					/* if the data was successfully moved, clear it */
 					if (event.getTransferMode() == TransferMode.MOVE) {
-						//draw = source.getImage();
+			            obstacle_type = true;
 			        }
 					event.consume();
 				});	
@@ -143,6 +145,49 @@ public class Editeur extends Application {
 				source.setOnMouseClicked( e -> {
 					draw = source.getImage();
 					obstacle_name = f.getPath();
+		            obstacle_type = true;
+				});
+            }
+        }
+	}
+    
+    
+    private void init_from_obstacle_fix_dir_assets() {
+    	
+    	position = 0;
+    	
+    	if (dir_obstacles_fix.isDirectory()) {
+
+            for (final File f : dir_obstacles_fix.listFiles(extension_png)) {
+                Image image = new Image("file:res/obstacles/fix/"+f.getName());
+				
+				ImageView source = new ImageView();
+				source.setImage(image);
+				images_fix.add(source, 1, position++);
+				GridPane.setMargin(source, new Insets(0, 10, 0, 0));
+			        
+				source.setOnDragDetected( event -> {
+					draw = source.getImage();
+		            Dragboard db = source.startDragAndDrop(TransferMode.ANY);
+		            ClipboardContent content = new ClipboardContent();
+		            content.putImage(source.getImage());
+		            content.putString(f.getPath());
+		            obstacle_type = false;
+		            db.setContent(content);
+		            event.consume();
+		        });
+				
+				source.setOnDragDone((DragEvent event) -> {             
+					if (event.getTransferMode() == TransferMode.MOVE) {
+			            obstacle_type = false;
+			        }
+					event.consume();
+				});	
+				
+				source.setOnMouseClicked( e -> {
+					draw = source.getImage();
+					obstacle_name = f.getPath();
+		            obstacle_type = false;
 				});
             }
         }
@@ -171,16 +216,27 @@ public class Editeur extends Application {
 		creations.setPrefWidth(100);
 		creations.setPrefHeight(70);	
 		
-		ScrollPane sp = new ScrollPane();
-		sp.setVbarPolicy(ScrollBarPolicy.NEVER);
-		sp.setHbarPolicy(ScrollBarPolicy.ALWAYS);
+		ScrollPane mouvable = new ScrollPane();
+		mouvable.setVbarPolicy(ScrollBarPolicy.NEVER);
+		mouvable.setHbarPolicy(ScrollBarPolicy.ALWAYS);
 		 
-		images = new GridPane();
-	       	                   
+	    images_mouvable = new GridPane();
+	    
 		init_from_obstacle_dir_assets();
 		
-		sp.setContent(images);
-	        	                        		
+		mouvable.setContent(images_mouvable);
+	    
+		ScrollPane inmouvable = new ScrollPane();
+		inmouvable.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+		inmouvable.setHbarPolicy(ScrollBarPolicy.NEVER);
+		 
+		images_fix = new GridPane();
+	    
+		init_from_obstacle_fix_dir_assets();
+		
+		inmouvable.setContent(images_fix);
+		
+		
 		init_from_creation_assets();
 		
 		creations.setItems(names);
@@ -189,8 +245,8 @@ public class Editeur extends Application {
 
         paint = new BorderPane();
 		
-		paint.setBorder(new Border(new BorderStroke(Color.BLACK, 
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+		//paint.setBorder(new Border(new BorderStroke(Color.BLACK, 
+          //      BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
        
 		
         
@@ -240,8 +296,7 @@ public class Editeur extends Application {
 	            		obs.setY(event.getY()-(db.getImage().getHeight()/2));
 	            		success = true;
 	            		paint.getChildren().add(obs);
-	            	
-	            		obstacles.add(new ObstacleModel(db.getString(), event.getX(), event.getY()));
+	            		obstacles.add(new ObstacleModel(db.getString(), event.getX(), event.getY(), obstacle_type, draw.getWidth(), draw.getHeight()));
 	             	}
 	                         
 	             	event.setDropCompleted(success);
@@ -254,7 +309,7 @@ public class Editeur extends Application {
 		             	obs.setX(event.getX()-(draw.getWidth()/2));
 		             	obs.setY(event.getY()-(draw.getHeight()/2));
 	            		paint.getChildren().add(obs);
-	            		obstacles.add(new ObstacleModel(obstacle_name, event.getX(), event.getY()));
+	            		obstacles.add(new ObstacleModel(obstacle_name, event.getX(), event.getY(), obstacle_type, draw.getWidth(), draw.getHeight()));
 	              	 }
 	             });
 	                         
@@ -295,9 +350,15 @@ public class Editeur extends Application {
 				fstream = new FileWriter(dest, true);
 				out = new BufferedWriter(fstream);
 				for(ObstacleModel o : obstacles){
+					if(o.mouvable)
+						out.write("mouvable\n");
+					else
+						out.write("inmouvable\n");
 					out.write(o.path + "\n");
 					out.write("" + o.posx + "\n");
 					out.write("" + o.posy + "\n");
+					out.write("" + o.width + "\n");
+					out.write("" + o.height + "\n");
 				}
 		        out.close();
 			} catch (IOException e1) {
@@ -308,7 +369,9 @@ public class Editeur extends Application {
 		
 		
 		root.setBottom(boutton);
-        root.setTop(sp);
+  
+        root.setTop(mouvable);
+        root.setRight(inmouvable);
         root.setLeft(stack);
 	}
     

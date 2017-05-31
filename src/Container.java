@@ -278,11 +278,11 @@ public class Container {
 	
 	public boolean collidesObstacles(Sprite s){
 		for(int i=0;i<obstacles.size();i++){
-			if(s!=obstacles.get(i)){
-			if(s.collides(obstacles.get(i)) || obstacles.get(i).collides(s)){
-				return true;
-			}
-			}
+
+			if(obstacles.get(i)!=s)
+				if(s.collides(obstacles.get(i)) || obstacles.get(i).collides(s)){
+					return true;
+				}
 		}
 		return false;
 	}

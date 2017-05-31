@@ -88,11 +88,18 @@ public class Game {
 						fstream = new FileReader(f);
 	    				out = new BufferedReader(fstream);
 	    				while((line = out.readLine()) != null) {
-	    					String obstacle = "file:"+line;
+	    					String type = line;
+	    					String obstacle = "file:"+out.readLine();
 	    					System.err.println("loading : "+ obstacle);
 	        		    	double posx = Double.parseDouble(out.readLine());
 	        		    	double posy = Double.parseDouble(out.readLine());
-	        				Obstacle.add(new Obstacle(obstacle, posx,posy,ContainerView.WIDTH,ContainerView.HEIGHT,35,35,0,0,1));
+
+	        		    	double width = Double.parseDouble(out.readLine());
+	        		    	double height = Double.parseDouble(out.readLine());
+	        		    	if(type.equals("mouvable"))
+	        		    		Obstacle.add(new Mouvable(obstacle, posx,posy,ContainerView.WIDTH,ContainerView.HEIGHT,width,height,0,0));
+	        		    	else
+	        		    		Obstacle.add(new InMouvable(obstacle, posx,posy,ContainerView.WIDTH,ContainerView.HEIGHT,width,height,0,0));
 	    	            }              		    	
 	            		   
 	            	}
