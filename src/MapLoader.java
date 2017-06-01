@@ -173,7 +173,7 @@ public class MapLoader extends Pane{
 		display.setTranslateX(x);
 		display.setTranslateY(y);
 		
-		next.setTranslateX(x + 350);
+		next.setTranslateX(x + 325);
 		next.setTranslateY(y + (display.getHeight()/2) - 15);
 		
 		previous.setTranslateX(x + 250);
@@ -189,9 +189,9 @@ public class MapLoader extends Pane{
         ScaleTransition rectangle = new ScaleTransition(Duration.seconds(1), display);
         rectangle.setToX(1);
         TranslateTransition trans_next = new TranslateTransition(Duration.seconds(1), next);
-        trans_next.setToX(x + 675);
+        trans_next.setToX(x + 660);
         TranslateTransition trans_pervious = new TranslateTransition(Duration.seconds(1), previous);
-        trans_pervious.setToX(x - 50);
+        trans_pervious.setToX(x - 40);
         
         deploy.getChildren().add(rectangle);
         deploy.getChildren().add(trans_next);
