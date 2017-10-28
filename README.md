@@ -20,5 +20,5 @@ Import the git project into eclipse.
 You may need to install JavaFx.
 
 
-Labadens Lucas
-Ben SassiRached
+Labadens Lucas<br>
+Ben Sassi Rached
